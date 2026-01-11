@@ -523,6 +523,11 @@ class TrainingUi(QWidget):
         super(TrainingUi, self).__init__()
         self.cfg = ConfigParser()
         self.cfg.read(config)
+        # 用于累积显示所有轨迹点
+        self.accumulated_trajectory = []  # 累积的轨迹点列表
+        self.visited_goals = []  # 已访问的目标点列表
+        self.current_goal = None  # 当前目标点
+        self.initial_start = None  # 初始起点
         self.init_ui()
 
     def init_ui(self):
@@ -587,19 +592,60 @@ class TrainingUi(QWidget):
         self.background_img.setRect(pg.QtCore.QRectF(x, y, width, height))
 
     def traj_plot_cb(self, goal, start, current_pose, trajectory_list):
+        # 保存初始起点（只在第一次调用时）
+        if self.initial_start is None:
+            self.initial_start = start.copy()
+        
+        # 检测目标点是否变化（用于连续目标点模式）
+        goal_changed = False
+        if self.current_goal is None:
+            goal_changed = True
+        else:
+            # 检查目标点是否变化（允许小的浮点误差）
+            if not np.allclose(self.current_goal, goal, atol=1e-3):
+                goal_changed = True
+                # 将之前的目标点添加到已访问列表
+                self.visited_goals.append(self.current_goal.copy())
+        
+        # 更新当前目标点
+        self.current_goal = goal.copy()
+        
+        # 累积轨迹点：将新的轨迹点添加到累积列表中
+        # trajectory_list 是当前从开始到现在的所有点，我们直接使用它
+        if len(trajectory_list) > 0:
+            # 将 trajectory_list 转换为列表格式并累积
+            # 为了避免重复，我们只保留最新的轨迹点
+            self.accumulated_trajectory = trajectory_list.tolist() if hasattr(trajectory_list, 'tolist') else list(trajectory_list)
+        
+        # 清除并重新绘制（保留所有累积的点）
         self.traj_pw.clear()
         # Re-add background if exists
         if hasattr(self, 'background_img'):
             self.traj_pw.addItem(self.background_img)
-        # Plot start and goal
-        self.traj_pw.plot([start[0]], [start[1]], symbol='o', symbolBrush='g', symbolSize=10)
-        self.traj_pw.plot([goal[0]], [goal[1]], symbol='o', symbolBrush='r', symbolSize=10)
-        # Plot trajectory
-        self.traj_pw.plot(
-            trajectory_list[..., 0],
-            trajectory_list[..., 1],
-            pen=pg.mkPen(color='b', width=2)
-        )
+        
+        # 绘制初始起点（绿色）
+        if self.initial_start is not None:
+            self.traj_pw.plot([self.initial_start[0]], [self.initial_start[1]], 
+                            symbol='o', symbolBrush='g', symbolSize=12, symbolPen='k')
+        
+        # 绘制所有已访问的目标点（黄色，表示已完成）
+        for visited_goal in self.visited_goals:
+            self.traj_pw.plot([visited_goal[0]], [visited_goal[1]], 
+                            symbol='s', symbolBrush='y', symbolSize=10, symbolPen='k')
+        
+        # 绘制当前目标点（红色）
+        self.traj_pw.plot([goal[0]], [goal[1]], 
+                        symbol='o', symbolBrush='r', symbolSize=12, symbolPen='k')
+        
+        # 绘制累积的轨迹（蓝色）
+        if len(self.accumulated_trajectory) > 0:
+            traj_array = np.array(self.accumulated_trajectory)
+            if traj_array.shape[0] > 0:
+                self.traj_pw.plot(
+                    traj_array[..., 0],
+                    traj_array[..., 1],
+                    pen=pg.mkPen(color='b', width=2)
+                )
 
     # 兼容性：保留原接口（即使不用）
     def action_cb(self, step, action): pass
