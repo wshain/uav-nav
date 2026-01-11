@@ -84,6 +84,16 @@ def main():
             position = positions[1]
             result_pos_list = city[position, :]
             
+            # 检查是否最后回到了第一个点（TSP 通常会回到起点）
+            # 如果最后一个点和第一个点相同，则排除最后一个点
+            if len(result_pos_list) > 1:
+                first_point = result_pos_list[0]
+                last_point = result_pos_list[-1]
+                # 检查是否相同（允许小的浮点误差）
+                if np.allclose(first_point, last_point, atol=1e-6):
+                    result_pos_list = result_pos_list[:-1]  # 排除最后一个点
+                    print("注意: 已排除路径末尾的起点（TSP 回到起点）")
+            
             # 获取路径长度（reward 就是路径总长度）
             # reward 是 [batch_size] 形状的数组，取索引1的样本（与 city 和 position 保持一致）
             path_length = float(reward[1]) if len(reward) > 1 else float(reward[0]) if len(reward) > 0 else 0.0
@@ -97,8 +107,8 @@ def main():
             # 保存原始城市坐标和优化后的路径顺序
             # 原始城市坐标 (x, y)
             original_cities = city  # shape: (max_length, 2)
-            # 优化后的路径顺序（按照访问顺序排列的城市坐标）
-            optimized_path = result_pos_list  # shape: (max_length, 2)
+            # 优化后的路径顺序（按照访问顺序排列的城市坐标，不包含回到起点的部分）
+            optimized_path = result_pos_list  # shape: (max_length, 2) 或 (max_length-1, 2)
             
             # 保存为 numpy 文件，供无人机评估使用
             # 格式: 每个目标点 [x, y, z]，z 固定为 5（无人机飞行高度）
