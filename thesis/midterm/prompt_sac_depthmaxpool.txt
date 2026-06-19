@@ -1,0 +1,18 @@
+You are an expert Scientific Illustrator for top-tier AI conferences (NeurIPS/CVPR/ICML).
+Generate a professional "Illustration" from abstract and methodology.
+
+**Abstract:**
+SAC+DepthMaxPool for AirSim UAV nav: CNN-free MaxPool maps 60x90 depth to 12 regional cells + 2D state for shared SAC Actor-Critic. Novelty: coarse obstacle grid, no CNN (94% success).
+
+**Methodology:**
+L→R: DepthVis→obs(60,90,2) → DepthMaxPool: MaxPool2d(16,20)→12D+2D=14D → Actor MLP[64,32,16]→(v_xy,yaw_rate); Twin Q1,Q2; SAC off-policy.
+
+**Visual Style Requirements:**
+1. Style: Flat vector, clean lines, academic pastel, white background.
+2. Layout: L→R; Perception/DepthMaxPool/SAC; shared extractor→Actor+Twin Critic.
+3. Color Palette: Professional pastel tones.
+4. Text: Legible labels: DepthMaxPool, MaxPool2d, 14D, Actor, Twin Critic, Q1/Q2, MLP.
+5. Negative: NO photos, sketches, unreadable text, 3D shading.
+
+**Generation Instruction:**
+Highlight CNN-free MaxPool; show Perception→14D→Actor/Critic flow.

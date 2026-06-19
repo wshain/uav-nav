@@ -1,0 +1,77 @@
+哈尔滨工业大学
+硕士学位开题报告
+题 目：基于深度强化学习的多目标的无人机路径导航研究
+（学位论文）
+学     院（部）       计算学部
+学科/专业学位类别         电子信息
+导        师          李治军
+研   究   生         王世豪
+学       号        24S136052
+开题报告日期          2025.09.12
+研究生院制
+摘要：
+本研究聚焦于探索基于深度强化学习的多目标无人机自主导航与避障方法。该方法旨在实现一个多目标的自主导航避障系统，针对多目标固定场景，例如农业场景下的多目标的喷洒农药，播种等作业，工业下的光伏板故障识别，喷水清理等作业，实现根据场景找到多目标之间的最短作业路径，并在作业过程中，实现自主避障与导航。形成一个两层的系统，上层抽象为经典tsp问题，使用强化学习指针网络训练，训练完成后，实现接近最优的tsp路径,相对于现场执行任务时使用传统的方法解决这个NP-hard问题，在很好的效果下，可以大大节约推理时间；下层导航与避障也使用强化学习训练，在air-sim中仿真，实现较好的导航与避障。	中期，上层实现无障碍物情况下的强化学习对tsp的训练，并对结果指标进行评测（平均路程长度，ratio等等），下层实现基本的强化学习的导航与避障的训练，并对指标进行评测（多次的成功率等），并简单的进行上下层的联合评测。已经实现一个多目标的无人机导航与避障系统	中期之后，展望后续继续进行的研究为，1，在强化学习tsp训练中，加入障碍物的影响，实现，联合评测后，距离更短（或变长），成功率增加。2，未来可将无人机接入大语言模型，结合智能体agent实现与大语言模型的交互，发布任务后，实现真正的智能体端到端的自主执行任务。
+课题来源及研究目的和意义
+课题的来源
+随着人工智能、物联网、高精度导航与传感器技术的飞速发展，无人机（UAV）已从早期的军事侦察工具演变为广泛应用于农业、工业、应急救援、公共安全及大众娱乐等领域的多功能平台。特别是在搜索、巡检与导航任务中，无人机凭借其高机动性、低成本、高效率和可进入复杂或危险环境的能力，展现出巨大的应用潜力 REF _Ref208336239 \r \h  \* MERGEFORMAT [1] REF _Ref208338751 \r \h  \* MERGEFORMAT [2]。近年来，国家大力推动“智慧农业”“智能制造”“数字中国”等战略，鼓励无人系统在各行业的深度融合与创新应用。以大疆创新为代表的国内企业在消费级和行业级无人机市场占据领先地位，美团的无人机配送技术也为人民生活提供了巨大便利，这些都推动了无人机技术的普及与产业化发展。然而，面对日益复杂的任务需求和动态多变的作业环境，现有无人机在自主导航精度、环境感知能力、多机协同机制及任务适应性等方面仍存在诸多挑战。因此，本课题源于对无人机在多场景下搜索巡检导航技术的迫切需求，结合当前技术发展趋势与实际应用痛点，旨在开展系统性研究，提升无人机在复杂环境中的智能化水平与任务执行能力。
+图1.无人机应用
+课题研究目的和意义
+无人机的快速发展为各个行业的监测和运输引入了变革性的解决方案，包括娱乐，物流、农业和工业检查。在农业领域，大型植保无人机依托高精度导航系统，可实现大面积农田的自动化播种、精准施肥与病虫害防治，大幅提升作业效率与资源利用率；小型无人机则适用于农田监测与数据采集，为智慧农业提供实时信息支持。在工业与基础设施巡检中，无人机可替代人工进入高危区域，对电力线路、桥梁、油气管道等进行高效、安全的视觉与热成像检测。在军事应用中，无人机执行侦察、监视与目标定位任务，显著增强战场感知能力。在应急搜救场景，无人机凭借快速部署与广域覆盖优势，可在灾害现场实现生命探测与通信中继，提升救援效率。在民众娱乐领域，以大疆为代表的消费级无人机推动了航拍、FPV竞速与无人机表演的普及，丰富了大众科技体验。
+当前全球无人机市场呈现爆发式增长，据Teal Group数据显示，预计2025年全球无人机市场规模突破将750亿美元，预计未来十年将持续高速增长。中国在消费级无人机领域占据主导地位，但在高端工业与军用无人机的核心算法、飞控系统、长航时动力等方面仍依赖进口或存在技术短板。本研究旨在实现一个大模型驱动的全流程智能的无人机导航系统，实现真正的自主智能。因此，本研究不仅具有重要的理论价值——推动自主导航、人工智能与无人系统交叉学科的发展，更具备显著的应用前景与社会经济效益：一方面可提升各行业作业效率与安全性，降低人力成本与事故风险；另一方面有助于推动我国无人机产业链的自主可控与技术升级，增强国际竞争力。
+随着无人机技术在工业巡检、应急救援、物流配送、农业植保等领域的广泛应用，其对自主导航能力的需求日益迫切。当前无人机系统正从“遥控执行”向“智能自主”演进，尤其在非结构化、动态变化及GPS拒止等复杂环境中，传统导航方法面临实时性不足、适应性差、部署成本高等瓶颈。因此，发展具备高实时性、强鲁棒性与良好泛化能力的自主导航技术，已成为推动无人机智能化升级的核心挑战 REF _Ref208338802 \r \h  \* MERGEFORMAT [3]。
+本研究不仅有助于推动无人机导航系统的智能化、轻量化与一体化发展，也为跨行业复杂任务场景（如城市低空飞行、灾害现场搜救、多机协同作业）提供可扩展的技术范式与实践路径。从更广视角看，研究成果将为具身智能体在三维空间中的自主决策提供理论支撑，具有重要的学术价值、经济潜力与战略意义，是实现未来无人系统“真正自主”的关键技术探索方向之一。
+国内外研究现状及分析
+国外研究现状
+近年来，随着人工智能技术的快速发展，国外在无人机自主导航与智能决策领域的研究已从传统的模块化架构逐步向智能化、端到端、语义驱动的方向演进。
+Ndidiamaka Adiuk REF _Ref208339131 \r \h  \* MERGEFORMAT [7]等人提出了一种基于视觉的导航模型，将预训练的Yolov5物体检测模型集成到经典机器人操作系统导航所使用的全局规划与局部执行中，以优化复杂环境下的障碍物检测和避免。在模型中，Dijkstra作为全局规划器，规划全局路径。动态窗口方法（DWA）作为局部规划器，基于成本地图选择最优轨迹以避开障碍物，确保安全导航。实验在ROS-Gazebo模拟和turtlebot3 waffle pi机器人平台上进行了验证和评估。结果表明，机器人在穿越不同检查点到达目标位置时，能够逐渐检测并避免障碍物而不发生碰撞。除了在目标检测上对导航规划进行结合外，随着近年自然语言处理领域中大语言模型的飞速发展，出现了许多结合语义的导航策略。
+随着大语言模型LLMs REF _Ref208339173 \r \h  \* MERGEFORMAT [8]的飞速发展，也有很多结合同时视觉与语言的视觉语言导航（VLN） REF _Ref208339277 \r \h  \* MERGEFORMAT [9] REF _Ref208339278 \r \h  \* MERGEFORMAT [10]的研究。Gengze Zhou REF _Ref208339302 \r \h  \* MERGEFORMAT [11]等人开发了NavGPT，这是一种纯粹基于LLMs的遵循指令的导航智能体，通过执行零-shot顺序动作预测，揭示了GPT模型在复杂具身场景中的推理能力，涉及视觉与语言导航。在每一步中，NavGPT将视觉观察、导航历史和未来可探索方向的文本描述作为输入，以推理智能体的当前状态，并决定如何接近目标。通过全面实验，证明NavGPT能够明确地为导航执行高级规划，包括将指令分解为子目标，整合与导航任务解决相关的常识知识，从观察到的场景中识别地标，跟踪导航进度，并通过调整计划适应例外情况。此外，实验显示LLMs能够从沿途的观察和行动中生成高质量的导航指令，并在给定智能体的导航历史的情况下绘制准确的自上而下的度量轨迹，然而，实验使用NavGPT进行零-shot R2R任务的表现仍落后于训练模型。在ROS机器人开源操作系统中，使用最多的是开源Nav2导航，即Steve Macenski REF _Ref208339388 \r \h  \* MERGEFORMAT [12]等人提出的一种导航解决方案，Navigation2，它建立在ROS导航的成功基础上。Navigation2使用行为树进行导航器任务编排，并采用为动态环境设计的新方法，适用于更广泛的现代传感器。它建立在ROS2之上，这是一个适用于安全关键应用和程序生命周期管理的安全消息传递框架。它也是全局路径规划加局部路径执行与避障的策略，框架有一大三小四个服务，一大即导航行为树服务，通过这个大的服务来进行下面三个小服务组织和调用，三个小服务即规划服务器，控制服务器与恢复服务器。其中规划器负责生成全局路径；控制器用于实时跟踪路径并调整机器人运动；恢复器则在机器人陷入困境或遇到问题时提供解决方案，确保系统具备容错能力。
+国内研究现状
+国内也有很多针对无人机导航框架与算法的研究，Chen REF _Ref208339420 \r \h  \* MERGEFORMAT [13]等人深入定制了ROS-Gazebo-PX4模拟器，并提供了一种端到端的仿真解决方案，用于无人机v-SLAM和导航研究。一套定位、建图和路径规划工具也集成到仿真平台中。在仿真中，包括复杂环境和机载传感器在内的各个方面可以与导航框架同时交互，以实现特定的监视任务。在这个端到端的仿真中，实现了点击即飞的自主无人机导航。整个框架首先通过视觉SLAM或其他定位算法，结合IMU数据，实时计算无人机在世界坐标系中的位置和姿态，然后将无人机在飞行过程中感知到的障碍物信息，构建并维护一个可用于导航的环境地图，最后使用fuxi-planner规划根据目标位置和环境地图，全局规划和局部规划相结合，实时生成最优路径，并将其转化为具体的控制指令。在飞行过程中，定位和建图模块持续工作，不断更新无人机的位置和环境地图。如果发现新的障碍物或地图发生变化，局部规划器会立即重新规划，确保飞行安全。在全局路径规划阶段，首先接收全局3D地图及投影2D地图对地图进行预处理，之后使用路径规划算法（如A*、Dijkstra等）在Map2D上找到从当前位置到目标位置的最短路径，最后计算最优局部目标点。在局部路径规划与执行阶段，首先接收局部目标，使用启发式角度搜索寻找下一个航路点，然后判断是否找到可行航路点，若找到则执行最小加速度运动规划，若没找到则启动备份计划，最后发送运动指令。
+国内在视觉语言导航的研究上，Jiazhao Zhang REF _Ref208339457 \r \h  \* MERGEFORMAT [14]等提出了Uni-NaVid，这是首个基于视频的视觉-语言-动作 (VLA) 模型，旨在统一各种具身导航任务，并实现在未见过的现实世界环境中对混合长视域任务的无缝导航。Uni-NaVid 通过协调所有常用具身导航任务的输入和输出数据配置，从而将所有任务集成到一个模型中来实现这一点。为了训练 Uni-NaVid，作者从四个关键的导航子任务中收集了总共 360 万个导航数据样本，并促进了它们之间的协同学习。在综合导航基准测试中开展的大量实验清晰地展现了 Uni-NaVid 统一建模的优势，并表明其达到了最佳性能。此外，实际实验也证实了该模型的有效性和效率，彰显了其强大的泛化能力。
+然而，上述研究所采取的方法大都依赖精确环境建图，在动态、未知或结构复杂环境中存在响应慢、路径僵化、鲁棒性差等问题。为突破传统框架的局限，基于深度强化学习（DRL）的端到端控制方法也有很多的探索。Fang REF _Ref208339486 \r \h  \* MERGEFORMAT [15]等人开发了一个空域场景下无人机路径规划的强化学习环境，其中设有静态障碍物、动态障碍物与目标地点。其次，考虑无人机的动力学方程约束及其避障需求，从安全强化学习的角度将该路径规划问题建模为约束 Markov 决策过程。最后，设计了相应的奖励函数，使用SAC算法迭代寻求该问题的近似最优策略，并以Monte Carlo测试对算法进行了分析。仿真结果表明，SAC算法训练后的无人机能够在动态不确定的环境中自主进行路径规划，并且比其他策略更具优越性。Liu REF _Ref208339507 \r \h  \* MERGEFORMAT [16]等人为了填补深度强化学习（DRL）理论与实际应用之间的差距，通过引入注意力机制和层次机制，解决DRL在实际应用中遇到的一些严重问题。更具体地说，为了提高DRL的鲁棒性，使用平均估计函数而不是普通的价值估计函数。然后，设计了一个递归网络和一个时间注意力机制，以提高算法的性能。第三，提出了一个层次框架，以改善其在长期任务上的表现。研究中使用了一些逼真的仿真环境以及现实世界来评估所提出的UAV自主导航方法。结果表明，基于DRL的导航方法在不同环境中表现良好。
+国内外文献综述的简析
+路径规划是一个NP-hard问题 REF _Ref208342494 \r \h  \* MERGEFORMAT [17]，在无人机自主导航领域，长期以来以基于几何建模与优化的传统方法为主流。典型路径规划算法包括A*、Dijkstra、RRT及其改进形式（如RRT*、Informed RRT*） REF _Ref208340822 \r \h  \* MERGEFORMAT [18]，通常依赖SLAM REF _Ref208340851 \r \h  \* MERGEFORMAT [19]技术构建二维栅格地图或三维点云地图，并在此基础上进行全局与局部路径搜索。此类方法在结构化环境中表现稳定，但存在计算复杂度高、难以应对动态障碍物、对先验地图依赖性强等问题，尤其在大规模非结构化环境中易出现规划延迟甚至失效，难以满足高速飞行任务的实时性需求。
+在环境感知方面，早期方法多采用手工特征结合SVM、随机森林等分类器进行障碍物识别，受限于特征泛化能力，鲁棒性较差。近年来，基于深度学习的目标检测与语义分割技术显著提升了感知精度，但多数系统仍采用“感知—反应”式架构，即检测后触发预设避障规则（如人工势场法、简单转向策略），缺乏对导航行为的整体优化，导致决策僵化、机动性差，难以应对复杂三维空间中的多障碍物耦合与突发干扰。
+为克服上述问题，近年来基于模块化架构的集成方案成为主流，典型如PX4飞控与ROS（机器人操作系统）结合Nav2等导航框架，形成“感知—建图—路径规划—局部避障”的分阶段流程。尽管该架构在工业级应用中取得一定成效，但仍存在响应延迟高、模块间耦合性强、参数调试复杂、对SLAM建图质量依赖大等固有缺陷，在未知或动态环境中部署困难。
+近年来，随着大语言模型在常识推理、指令理解与思维链（Chain-of-Thought, CoT） REF _Ref208340977 \r \h  \* MERGEFORMAT [20]推理方面展现出强大能力，研究者尝试将其引入具身智能任务，尤其是视觉语言导航（VLN），期望借助LLM的高级语义理解与任务分解能力，提升智能体在复杂指令下的导航表现。
+上述方法在定性分析中表现出类人的高层推理能力，例如能够将复合指令分解为多个子任务序列；基于常识推断空间布局；在遭遇障碍或路径中断时自主调整路线；以及通过生成自然语言提问来澄清模糊指令或获取外部帮助，体现了较强的语义理解与上下文适应能力。
+然而，在定量性能评估方面，当前纯LLM驱动或以LLM为核心的VLN系统仍存在明显局限。在主流基准数据集如Room-to-Room（R2R） REF _Ref208341173 \r \h  \* MERGEFORMAT [21]等上的实验结果表明，此类方法在成功率，加权路径长度等关键指标上普遍落后于经过专门训练的端到端模型，其根本原因在于LLM缺乏对三维空间结构与运动动力学的直接感知与控制能力，难以实现精确的动作输出与实时闭环控制。同时，模型易受提示工程影响、存在推理幻觉风险、且计算开销大，限制了其在真实机器人平台上的部署可行性。
+尽管大语言模型为视觉语言导航提供了全新的高层语义理解范式，但在实际导航性能、实时响应能力与系统鲁棒性方面仍有显著差距。未来研究需从“语言主导”转向“感知—语言—动作”深度融合，构建兼具语义智能与物理交互能力的混合架构，方能推动具身智能向更高层次发展。
+基于以上，目前以深度强化学习为代表的端到端智能控制方法也许是较好的应用范式。该范式通过在仿真环境中大规模训练智能体，直接从原始传感器输入映射至控制输出，实现感知—决策—控制一体化闭环学习。其优势在于：（1）无需显式建图与路径规划，简化系统架构；（2）具备强泛化能力，可在未知环境中直接部署；（3）推理阶段仅需一次前向传播，响应延迟低，满足毫秒级控制需求；（4）可内隐学习类人飞行员的敏捷飞行动作，提升飞行效率与自然性。
+然而，该范式仍面临诸多挑战：一是训练过程样本效率低、收敛不稳定，尤其在高维连续动作空间中；二是安全性验证缺乏统一标准，极端场景下的失效风险难以量化；三是机载计算资源有限，制约复杂模型部署；四是模型可解释性差，限制其在安全关键场景的应用。
+传统基于地图与规则的导航方法虽成熟可靠，但在动态性、实时性与泛化能力方面存在明显短板；基于LLM的也许是具身智能的未来，但是目前效果并不尽如人意；而基于强化学习的端到端方法正逐步推动无人机从“自动化执行”向“自主化决策”跃迁，展现出巨大潜力。未来研究需在算法稳定性、安全性保障、轻量化设计与真实环境验证等方面持续突破，方能实现该技术在复杂非结构化场景下的规模化落地应用。
+参考文献
+Huang Y, Chen J, Huang D. UFPMP-Det: Toward accurate and efficient object detection on drone imagery[C]//Proceedings of the AAAI conference on artificial intelligence. 2022, 36(1): 1026-1033.
+Zhu X, Lyu S, Wang X, et al. TPH-YOLOv5: Improved YOLOv5 based on transformer prediction head for object detection on drone-captured scenarios[C]//Proceedings of the IEEE/CVF international conference on computer vision. 2021: 2778-2788.
+Liu Y, Yao F, Yue Y, et al. Navagent: Multi-scale urban street view fusion for uav embodied vision-and-language navigation[J]. arXiv preprint arXiv:2411.08579, 2024.
+Barto A G. Reinforcement learning: An introduction. by richard’s sutton[J]. SIAM Rev, 2021, 6(2): 423.
+Mnih V, Kavukcuoglu K, Silver D, et al. Human-level control through deep reinforcement learning[J]. nature, 2015, 518(7540): 529-533.
+Seo J, Kim S K, Jalalvand A, et al. Avoiding fusion plasma tearing instability with deep reinforcement learning[J]. Nature, 2024, 626(8000): 746-751.
+Adiuku N, Avdelidis N P, Tang G, et al. Mobile robot obstacle detection and avoidance with NAV-YOLO[J]. 2024.UAVs Meet LLMs: Overviews and Perspectives Toward Agentic Low-Altitude Mobility.
+Vemprala S H, Bonatti R, Bucker A, et al. Chatgpt for robotics: Design principles and model abilities[J]. Ieee Access, 2024, 12: 55682-55696.
+Wang X, Huang J, Tian Y, et al. Parallel driving with big models and foundation intelligence in cyber–physical–social spaces[J]. Research, 2024, 7: 0349.
+Zhang Y, Ma Z, Li J, et al. Vision-and-language navigation today and tomorrow: A survey in the era of foundation models[J]. arXiv preprint arXiv:2407.07035, 2024.
+Zhou G, Hong Y, Wu Q. Navgpt: Explicit reasoning in vision-and-language navigation with large language models[C]//Proceedings of the AAAI Conference on Artificial Intelligence. 2024, 38(7): 7641-7649.
+Macenski S, Martín F, White R, et al. The marathon 2: A navigation system[C]//2020 IEEE/RSJ International Conference on Intelligent Robots and Systems (IROS). IEEE, 2020: 2718-2725.
+Chen S, Zhou W, Yang A S, et al. An end-to-end UAV simulation platform for visual SLAM and navigation[J]. Aerospace, 2022, 9(2): 48.
+Zhang J, Wang K, Wang S, et al. Uni-navid: A video-based vision-language-action model for unifying embodied navigation tasks[J]. arXiv preprint arXiv:2412.06224, 2024.
+方城亮等.基于最大熵安全强化学习的无人机路径规划[M].中国科学:信息科学.2024:1674-4-7267.
+Liu Z, Cao Y, Chen J, et al. A hierarchical reinforcement learning algorithm based on attention mechanism for UAV autonomous navigation[J]. IEEE Transactions on Intelligent Transportation Systems, 2022, 24(11): 13309-13320.
+Dewangan R K, Shukla A, Godfrey W W. Three dimensional path planning using Grey wolf optimizer for UAVs[J]. Applied Intelligence, 2019, 49(6): 2201-2217.
+Sariff N, Buniyamin N. An overview of autonomous mobile robot path planning algorithms[C]//2006 4th student conference on research and development. IEEE, 2006: 183-188.
+Taketomi T, Uchiyama H, Ikeda S. Visual SLAM algorithms: A survey from 2010 to 2016[J]. IPSJ transactions on computer vision and applications, 2017, 9(1): 16.
+Wei J, Wang X, Schuurmans D, et al. Chain-of-thought prompting elicits reasoning in large language models[J]. Advances in neural information processing systems, 2022, 35: 24824-24837.
+Anderson P, Wu Q, Teney D, et al. Vision-and-language navigation: Interpreting visually-grounded navigation instructions in real environments[C]//Proceedings of the IEEE conference on computer vision and pattern recognition. 2018: 3674-3683.
+Brockman G, Cheung V, Pettersson L, et al. Openai gym[J]. arXiv preprint arXiv:1606.01540, 2016.
+Haarnoja T, Zhou A, Abbeel P, et al. Soft actor-critic: Off-policy maximum entropy deep reinforcement learning with a stochastic actor[C]//International conference on machine learning. Pmlr, 2018: 1861-1870.
+Haarnoja T, Tang H, Abbeel P, et al. Reinforcement learning with deep energy-based policies[C]//International conference on machine learning. PMLR, 2017: 1352-1361.
+Shalev-Shwartz S, Shammah S, Shashua A. Safe, multi-agent, reinforcement learning for autonomous driving[J]. arXiv preprint arXiv:1610.03295, 2016.
+Ding D, Wei X, Yang Z, et al. Provably efficient generalized lagrangian policy optimization for safe multi-agent reinforcement learning[C]//Learning for dynamics and control conference. PMLR, 2023: 315-332.
+Altman E. Constrained Markov decision processes[M]. Routledge, 2021.
+Yang Q, Simão T D, Tindemans S H, et al. WCSAC: Worst-case soft actor critic for safety-constrained reinforcement learning[C]//Proceedings of the AAAI Conference on Artificial Intelligence. 2021, 35(12): 10639-10646.
+Maruyama Y, Kato S, Azumi T. Exploring the performance of ROS2[C]//Proceedings of the 13th international conference on embedded software. 2016: 1-10.
+Koenig N, Howard A. Design and use paradigms for gazebo, an open-source multi-robot simulator[C]//2004 IEEE/RSJ international conference on intelligent robots and systems (IROS)(IEEE Cat. No. 04CH37566). Ieee, 2004, 3: 2149-2154.
+Meier L, Honegger D, Pollefeys M. PX4: A node-based multithreaded open source robotics framework for deeply embedded platforms[C]//2015 IEEE international conference on robotics and automation (ICRA). IEEE, 2015: 6235-6240.
+Amsters R, Slaets P. Turtlebot 3 as a robotics education platform[C]//International Conference on Robotics in Education (RiE). Cham: Springer International Publishing, 2019: 170-181.
+Fan J, Wang Z, Xie Y, et al. A theoretical analysis of deep Q-learning[C]//Learning for dynamics and control. PMLR, 2020: 486-489.
+Fedus W, Ramachandran P, Agarwal R, et al. Revisiting fundamentals of experience replay[C]//International conference on machine learning. PMLR, 2020: 3061-3071.
