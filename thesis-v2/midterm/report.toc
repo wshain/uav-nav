@@ -1,0 +1,17 @@
+\contentsline {section}{\numberline {1}学术研究或者实践工作进度情况}{1}{section.1}%
+\contentsline {section}{\numberline {2}目前已完成的学术研究或者实践工作内容和取得的研究结果}{1}{section.2}%
+\contentsline {subsection}{\numberline {2.1}两层系统总体设计}{1}{subsection.2.1}%
+\contentsline {subsection}{\numberline {2.2}上层：基于指针网络的多目标 TSP 规划}{2}{subsection.2.2}%
+\contentsline {subsubsection}{\numberline {2.2.1}指针网络 TSP 策略架构}{2}{subsubsection.2.2.1}%
+\contentsline {paragraph}{结果分析}{5}{paragraph*.1}%
+\contentsline {subsection}{\numberline {2.3}下层：AirSim 环境上的 DRL 导航实验}{6}{subsection.2.3}%
+\contentsline {subsubsection}{\numberline {2.3.1}SAC-DepthMaxPool 策略架构}{6}{subsubsection.2.3.1}%
+\contentsline {subsubsection}{\numberline {2.3.2}实验：算法与感知对比}{7}{subsubsection.2.3.2}%
+\contentsline {paragraph}{结果分析}{7}{paragraph*.2}%
+\contentsline {subsubsection}{\numberline {2.3.3}单点导航能力评测}{10}{subsubsection.2.3.3}%
+\contentsline {paragraph}{结果分析}{10}{paragraph*.3}%
+\contentsline {subsection}{\numberline {2.4}上下层联合评测}{11}{subsection.2.4}%
+\contentsline {paragraph}{结果分析}{11}{paragraph*.4}%
+\contentsline {subsection}{\numberline {2.5}阶段性小结}{13}{subsection.2.5}%
+\contentsline {section}{\numberline {3}目前存在的或预期可能出现的问题}{13}{section.3}%
+\contentsline {section}{\numberline {4}后期学术研究或者实践工作的进度安排}{14}{section.4}%

@@ -1,0 +1,78 @@
+\begin{thebibliography}{1}
+\providecommand{\bibauthor}[1]{#1}
+\providecommand{\bibeditor}[1]{\bibauthor{#1}}
+\providecommand{\bibtranslator}[1]{#1}
+\providecommand{\bibtitle}[1]{#1}
+\providecommand{\bibbooktitle}[1]{#1}
+\providecommand{\bibjournal}[1]{#1}
+\providecommand{\bibmark}[1]{\mbox{#1}}
+\providecommand{\bibcountry}[1]{#1}
+\providecommand{\bibpatentid}[1]{#1}
+\providecommand{\bibedition}[1]{#1}
+\providecommand{\biborganization}[1]{#1}
+\providecommand{\bibaddress}[1]{#1}
+\providecommand{\bibpublisher}[1]{#1}
+\providecommand{\bibinstitution}[1]{#1}
+\providecommand{\bibschool}[1]{#1}
+\providecommand{\bibvolume}[1]{#1}
+\providecommand{\bibnumber}[1]{#1}
+\providecommand{\bibversion}[1]{#1}
+\providecommand{\bibpages}[1]{#1}
+\providecommand{\bibmodifydate}[1]{#1}
+\providecommand{\bibcitedate}[1]{#1}
+\providecommand{\bibyear}[1]{#1}
+\providecommand{\bibdate}[1]{#1}
+\providecommand{\biburl}[1]{\newline\url{#1}}
+
+\bibitem{dewangan2019gwo}
+\bibauthor{{, et~al}{Dewangan R~K}{, Shukla A}{, Godfrey W~W}}\nolinebreak\@.
+  \bibtitle{Three dimensional path planning using {Grey} wolf optimizer for
+  {UAVs}}\bibmark{[J]}\nolinebreak\@. \bibjournal{Applied Intelligence},
+  \bibyear{2019}, \bibvolume{49}\bibnumber{(6)}\textnormal{:
+  }\bibpages{2201\textnormal{-}2217}\nolinebreak\@.
+
+\bibitem{bello2017nco}
+\bibauthor{{, et~al}{Bello I}{, Pham H}{, Le Q~V}{, others}}\nolinebreak\@.
+  \bibtitle{Neural combinatorial optimization with reinforcement
+  learning}\bibmark{[C]} //\thinspace{}\bibbooktitle{International Conference
+  on Learning Representations (ICLR) Workshop}\nolinebreak\@.
+  \bibyear{2017}\nolinebreak\@.
+
+\bibitem{vinyals2015pointer}
+\bibauthor{{, et~al}{Vinyals O}{, Fortunato M}{, Jaitly N}}\nolinebreak\@.
+  \bibtitle{Pointer networks}\bibmark{[C]} //\thinspace{}\bibbooktitle{Advances
+  in Neural Information Processing Systems}\nolinebreak\@.
+  \bibyear{2015}\textnormal{: }\bibpages{2692\textnormal{-}2700}\nolinebreak\@.
+
+\bibitem{christofides1976}
+\bibauthor{{, et~al}{Christofides N}}\nolinebreak\@. \bibtitle{Worst-case
+  analysis of a new heuristic for the travelling salesman
+  problem}\bibmark{[J]}\nolinebreak\@. \bibjournal{Management Sciences Research
+  Report}, \bibyear{1976}, \bibvolume{388}\nolinebreak\@.
+
+\bibitem{he2021explainable}
+\bibauthor{{, et~al}{He L}{, Aouf N}{, Song B}}\nolinebreak\@.
+  \bibtitle{Explainable deep reinforcement learning for {UAV} autonomous path
+  planning}\bibmark{[J/OL]}\nolinebreak\@. \bibjournal{Aerospace Science and
+  Technology}, \bibyear{2021}, \bibvolume{118}\textnormal{:
+  }\bibpages{107052}\nolinebreak\@.
+  \url{http://dx.doi.org/10.1016/j.ast.2021.107052}\nolinebreak\@.
+
+\bibitem{liu2022hrl}
+\bibauthor{{, et~al}{Liu Z}{, Cao Y}{, Chen J}{, others}}\nolinebreak\@.
+  \bibtitle{A hierarchical reinforcement learning algorithm based on attention
+  mechanism for {UAV} autonomous navigation}\bibmark{[J]}\nolinebreak\@.
+  \bibjournal{IEEE Transactions on Intelligent Transportation Systems},
+  \bibyear{2022}, \bibvolume{24}\bibnumber{(11)}\textnormal{:
+  }\bibpages{13309\textnormal{-}13320}\nolinebreak\@.
+
+\bibitem{haarnoja2018sac}
+\bibauthor{{, et~al}{Haarnoja T}{, Zhou A}{, Abbeel P}{,
+  others}}\nolinebreak\@. \bibtitle{Soft actor-critic: Off-policy maximum
+  entropy deep reinforcement learning with a stochastic actor}\bibmark{[C]}
+  //\thinspace{}\bibbooktitle{International Conference on Machine
+  Learning}\nolinebreak\@. \bibaddress{[S.l.]}\textnormal{:
+  }\bibpublisher{PMLR}, \bibyear{2018}\textnormal{:
+  }\bibpages{1861\textnormal{-}1870}\nolinebreak\@.
+
+\end{thebibliography}

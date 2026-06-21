@@ -1,0 +1,34 @@
+% !Mode:: "TeX:UTF-8"
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% 哈尔滨工业大学 硕士学位论文中期检查报告
+% 模板：hithesis-dev / examples/hitart/reports
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\documentclass[fontset=windows,toc=true,type=master,stage=midterm,campus=harbin]{hithesisart}
+% 此处选项中不要有空格
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% 必填选项
+% type=doctor|master|bachelor
+% stage=opening|midterm
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% 选填选项
+% campus=shenzhen|weihai|harbin
+% fontset=windows|mac|ubuntu|fandol
+% toc=true|false
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\graphicspath{{figures/}}
+
+\begin{document}
+
+\input{front/coverart.tex}
+\makecover
+
+% 哈尔滨校区硕士生中期报告结构 --------------------------------------
+\input{body/report_harbin_master_midterm}
+% -------------------------------------------------------------
+
+\end{document}
+
+% Local Variables:
+% TeX-engine: xetex
+% End:
