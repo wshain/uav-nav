@@ -415,6 +415,7 @@
 }
 
 \hit@def@term{ctitlecover}
+\hit@def@term{ctype}
 \hit@def@term{csubject}
 \hit@def@term{cauthor}
 \hit@def@term{cstudentid}
@@ -455,7 +456,8 @@
   \begin{center}
     \ifboolexpr{ bool {hit@shenzhen} and bool {hit@master} and bool {hit@opening} }%
     {\xiaoyi\ziju{1/8}}{\erhao}
-    \songti\textbf{\hit@cxuewei\hit@cthesisname
+    \songti\textbf{\hit@cxuewei
+      \ifx\hit@ctype\@empty\hit@cthesisname\else\hit@ctype\fi
       \ifhit@opening
         \hit@stage@opening
       \else
