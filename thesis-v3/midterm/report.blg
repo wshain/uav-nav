@@ -1,0 +1,52 @@
+This is BibTeX, Version 0.99d (TeX Live 2025)
+Capacity: max_strings=200000, hash_size=200000, hash_prime=170003
+The top-level auxiliary file: report.aux
+The style file: hithesis.bst
+Reallocated singl_function (elt_size=4) to 100 items from 50.
+Reallocated singl_function (elt_size=4) to 100 items from 50.
+Reallocated wiz_functions (elt_size=4) to 6000 items from 3000.
+Database file #1: reference.bib
+Warning--Require citedate: he2021explainable
+Warning--Require address: haarnoja2018sac
+You've used 6 entries,
+            3100 wiz_defined-function locations,
+            747 strings with 7078 characters,
+and the built_in function-call counts, 20006 in all, are:
+= -- 2449
+> -- 27
+< -- 27
++ -- 2131
+- -- 96
+* -- 383
+:= -- 2453
+add.period$ -- 0
+call.type$ -- 6
+change.case$ -- 0
+chr.to.int$ -- 0
+cite$ -- 8
+duplicate$ -- 2876
+empty$ -- 512
+format.name$ -- 84
+if$ -- 5453
+int.to.chr$ -- 0
+int.to.str$ -- 6
+missing$ -- 0
+newline$ -- 45
+num.names$ -- 6
+pop$ -- 178
+preamble$ -- 1
+purify$ -- 0
+quote$ -- 0
+skip$ -- 88
+stack$ -- 0
+substring$ -- 2575
+swap$ -- 305
+text.length$ -- 0
+text.prefix$ -- 0
+top$ -- 0
+type$ -- 0
+warning$ -- 2
+while$ -- 177
+width$ -- 7
+write$ -- 111
+(There were 2 warnings)
