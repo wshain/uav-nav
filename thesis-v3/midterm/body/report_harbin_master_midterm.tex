@@ -38,7 +38,16 @@
 
 本小节考虑对称 TSP：给定 $n=20$ 个二维城市坐标 $\mathbf{s}_i=(x_i,y_i)$，求访问排列 $\pi$ 使闭合回路欧氏长度 $L(\pi)$ 最小。网络输入为 $(B,n,2)$ 的 batch，不设单独 depot 节点。
 
-编码端采用一维卷积层 Conv1d$(2\!\to\!128,k\!=\!1)$ 将各城市嵌入 128 维，再经 LSTM$(128\!\to\!128)$ 编码为节点序列 $\mathbf{h}_1,\ldots,\mathbf{h}_n$（表~\ref{tab:tsp-arch}）。解码端以 LSTM 末态 $(h,c)$ 初始化 LSTM 单元，逐步解码 $n$ 步：每步先用 Glimpse 注意力（$w_{ref}$ Conv1d + $w_q$ Linear + $v\!\cdot\!\tanh$）聚合未访问节点，再经指针层输出 logits $=C\!\cdot\!\tanh(\mathrm{scores})$（$C\!=\!10$），对已访问城市施加 mask；训练时按 Categorical 采样，推理 Greedy 时 argmax。推理阶段 scores 除以温度 $T\!=\!2.0$。
+指针网络（Pointer Network, Ptr-Net）是一种改进的 Seq2Seq 架构，适用于输出元素完全取自输入序列的组合优化问题。如图~\ref{fig:pointer-arch}所示，编码器（蓝色 LSTM 单元）将输入序列 $(x_1,\ldots,x_n)$ 映射为隐藏状态 $(\mathbf{h}_1,\ldots,\mathbf{h}_n)$；解码器（粉色 LSTM 单元）以特殊起始符 $\langle g\rangle$ 为初始输入，逐步解码 $n$ 步。与传统注意力通过加权求和生成上下文向量不同，Ptr-Net 将注意力分布作为``指针''，在每一步直接从输入序列中选择一个位置作为输出；上一步被选中的元素作为下一步解码器输入。图中示例输入为 $(x_1,\ldots,x_5)$，解码依次指向 $x_4,x_5,x_1,x_2,x_3$，最终输出置换 $(x_4,x_5,x_1,x_2,x_3)$。该机制使输出词表大小随输入长度动态变化，天然适用于 TSP 等需要输出访问排列的任务~\cite{vinyals2015pointer,bello2017nco}。
+
+\begin{figure}[htbp]
+  \centering
+  \includegraphics[width=0.95\textwidth]{pointer_network_architecture}
+  \caption{指针网络编码—解码与 pointing 选择机制示意}
+  \label{fig:pointer-arch}
+\end{figure}
+
+在本课题 TSP 实现中，编码端采用一维卷积层 Conv1d$(2\!\to\!128,k\!=\!1)$ 将各城市嵌入 128 维，再经 LSTM$(128\!\to\!128)$ 编码为节点序列 $\mathbf{h}_1,\ldots,\mathbf{h}_n$（表~\ref{tab:tsp-arch}）。解码端以 LSTM 末态 $(h,c)$ 初始化 LSTM 单元，逐步解码 $n$ 步：每步先用 Glimpse 注意力（$w_{ref}$ Conv1d + $w_q$ Linear + $v\!\cdot\!\tanh$）聚合未访问节点，再经指针层输出 logits $=C\!\cdot\!\tanh(\mathrm{scores})$（$C\!=\!10$），对已访问城市施加 mask；训练时按 Categorical 采样，推理 Greedy 时 argmax。推理阶段 scores 除以温度 $T\!=\!2.0$。
 
 Critic 基线与 Encoder 同构，采用 embed LSTM，接 3 步 Glimpse process block与两层 FFN，输出标量 $b(s)$ 作为 REINFORCE 基线，用于降低梯度方差。训练目标方面，Actor 损失为 $\mathbb{E}[(L(\pi)-b(s))\log p(\pi)]$，Critic 损失为 $\mathrm{MSE}(b(s),L(\pi))$；采用 Adam 优化，TSP20 下 batch$=128$、lr$=10^{-3}$、每 5000 步衰减 0.96、共 100k 步，梯度裁剪 $\|\nabla\|_2\!\le\!1.0$。如图~\ref{fig:pointer-net}所示，城市坐标经 Actor 分支（Encoder-PointerDecoder）输出排列 $\pi$ 与 $\log p(\pi)$，Critic 分支估计基线 $b(s)$，以回路长度 $L(\pi)$ 驱动 REINFORCE 更新；Decoder 以 $\langle g\rangle$ 为起点逐步 pointing 未访问节点，Visit Mask 保证 $\pi$ 为有效排列~\cite{vinyals2015pointer,bello2017nco}。
 

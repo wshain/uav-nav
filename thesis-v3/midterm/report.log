@@ -1,4 +1,4 @@
-This is XeTeX, Version 3.141592653-2.6-0.999997 (TeX Live 2025) (preloaded format=xelatex 2025.6.3)  23 JUN 2026 16:17
+This is XeTeX, Version 3.141592653-2.6-0.999997 (TeX Live 2025) (preloaded format=xelatex 2025.6.3)  24 JUN 2026 04:24
 entering extended mode
  restricted \write18 enabled.
  %&-line parsing enabled.
@@ -1580,13 +1580,13 @@ File: figures/Overall_Architecture.png Graphic file (type bmp)
 
 
 [2]
-File: figures/fig_tsp_actor_critic_architecture.png Graphic file (type bmp)
-<figures/fig_tsp_actor_critic_architecture.png>
+File: figures/pointer_network_architecture.png Graphic file (type bmp)
+<figures/pointer_network_architecture.png>
+File: figures/fig_tsp_actor_critic_architecture.jpg Graphic file (type bmp)
+<figures/fig_tsp_actor_critic_architecture.jpg>
 
 
 [3]
-
-[4]
 File: figures/fig_tsp_training_curve.png Graphic file (type bmp)
 <figures/fig_tsp_training_curve.png>
 File: figures/fig_tsp_route_sample.png Graphic file (type bmp)
@@ -1594,6 +1594,8 @@ File: figures/fig_tsp_route_sample.png Graphic file (type bmp)
 File: figures/fig_tsp_ratio_curve.png Graphic file (type bmp)
 <figures/fig_tsp_ratio_curve.png>
 
+
+[4]
 
 [5]
 
@@ -1603,11 +1605,7 @@ File: figures/fig_tsp_ratio_curve.png Graphic file (type bmp)
 File: figures/SAC_DepthMaxPool.png Graphic file (type bmp)
 <figures/SAC_DepthMaxPool.png>
 
-
-[8]
-
-[9]
-Overfull \hbox (57.99403pt too wide) in paragraph at lines 229--239
+Overfull \hbox (57.99403pt too wide) in paragraph at lines 238--248
  [][] 
  []
 
@@ -1620,6 +1618,10 @@ File: figures/fig_expA_ep_rew_mean.png Graphic file (type bmp)
 File: figures/fig_expA_ep_len_mean.png Graphic file (type bmp)
 <figures/fig_expA_ep_len_mean.png>
 
+
+[8]
+
+[9]
 
 [10]
 
@@ -1635,7 +1637,7 @@ File: figures/fig_uav_airsim.png Graphic file (type bmp)
 [12]
 
 [13]
-Overfull \hbox (12.79391pt too wide) in paragraph at lines 373--385
+Overfull \hbox (12.79391pt too wide) in paragraph at lines 382--394
  [][] 
  []
 
@@ -1656,12 +1658,12 @@ Package rerunfilecheck Info: File `report.out' has not changed.
 (rerunfilecheck)             Checksum: 7B6FD1EE774EBFCC681F254CA086491C;2627.
  ) 
 Here is how much of TeX's memory you used:
- 23907 strings out of 473832
- 482612 string characters out of 5733159
- 882458 words of memory out of 5000000
- 46518 multiletter control sequences out of 15000+600000
+ 23932 strings out of 473832
+ 483590 string characters out of 5733159
+ 887506 words of memory out of 5000000
+ 46542 multiletter control sequences out of 15000+600000
  589310 words of font info for 159 fonts, out of 8000000 for 9000
  1348 hyphenation exceptions out of 8191
  107i,13n,125p,1197b,428s stack positions out of 10000i,1000n,20000p,200000b,200000s
 
-Output written on report.xdv (17 pages, 224860 bytes).
+Output written on report.xdv (17 pages, 231484 bytes).

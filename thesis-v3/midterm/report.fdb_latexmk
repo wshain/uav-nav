@@ -1,19 +1,19 @@
 # Fdb version 4
-["bibtex report"] 1782202627.84626 "report.aux" "report.bbl" "report" 1782202649.26861 0
+["bibtex report"] 1782246277.98631 "report.aux" "report.bbl" "report" 1782246305.52449 0
   "./hithesis.bst" 1781872863 138806 24898a9d7c527a69730cf11cf8ab7f9c ""
   "./reference.bib" 1781869306 12640 e01bc073627328d87b2970f3799a59b1 ""
-  "report.aux" 1782202632 7061 e85d66cd34ffb283796dafc08387263a "xelatex"
+  "report.aux" 1782246282 7380 5cfa1c38c8c90f007d8df2973880200d "xelatex"
   (generated)
   "report.bbl"
   "report.blg"
   (rewritten before read)
-["xdvipdfmx"] 1782202633.89194 "report.xdv" "report.pdf" "report" 1782202649.27938 0
-  "report.xdv" 1782202632 224860 7af79410fcbadd158a3234ac90b05d89 "xelatex"
+["xdvipdfmx"] 1782246283.29369 "report.xdv" "report.pdf" "report" 1782246305.52931 0
+  "report.xdv" 1782246282 231484 a787cc665ab2766e7997c293cc8ce6b8 "xelatex"
   (generated)
   "report.pdf"
   (rewritten before read)
-["xelatex"] 1782202628.36819 "report.tex" "report.xdv" "report" 1782202649.26893 0
-  "body/report_harbin_master_midterm.tex" 1782202618 30661 5c1a6cec713837f0c2a347a23503d3b9 ""
+["xelatex"] 1782246278.45742 "report.tex" "report.xdv" "report" 1782246305.52473 0
+  "body/report_harbin_master_midterm.tex" 1782234924 31864 8fd934d70224eb1e05604bc7275b5d21 ""
   "c:/Windows/Fonts/msyh.ttc" 1740847873 19704352 1e10e74402e59d54499af795caf0b135 ""
   "c:/texlive/2025/texmf-dist/fonts/map/fontname/texfonts.map" 1748944020 3524 cb3e574dea2d1052e39280babc910dc8 ""
   "c:/texlive/2025/texmf-dist/fonts/tfm/adobe/zapfding/pzdr.tfm" 1748945659 1528 7e12f4c0fcf5a072cebdcfbfc610f54c ""
@@ -163,26 +163,27 @@
   "c:/texlive/2025/texmf-var/web2c/xetex/xelatex.fmt" 1748945799 5639799 29e63a8a4f0d8119ced04b28e64d9336 ""
   "c:/texlive/2025/texmf.cnf" 1748945677 713 e69b156964470283e0530f5060668171 ""
   "figures/Overall_Architecture.png" 1781624168 1371393 059a5bbfd8396d38715d21f39ee54e21 ""
-  "figures/SAC_DepthMaxPool.png" 1781614276 1394526 39c17844bc5b149f9d03991338c65d2e ""
+  "figures/SAC_DepthMaxPool.png" 1782246176 1114235 6c4b7e0f01ffe60a0bcf8fbf8a5dfa74 ""
   "figures/fig_expA_crash_rate.png" 1781519082 160031 e290b4cfad7f9cdaea23f168a974e866 ""
   "figures/fig_expA_ep_len_mean.png" 1781519082 154503 a5f9ff1d80c1f85832eb6efaf8f3c694 ""
   "figures/fig_expA_ep_rew_mean.png" 1781519081 129882 59129be04a2bc382b7259b69ec0dbfa8 ""
   "figures/fig_expA_success_rate.png" 1781519082 131158 3b7f47479a80059226797c6fd30b1a70 ""
-  "figures/fig_tsp_actor_critic_architecture.png" 1781877414 110231 8bea038865733c4adc1a6787cc29326a ""
+  "figures/fig_tsp_actor_critic_architecture.jpg" 1782243979 1355999 bdfb358ce12c3ab4e1a30dcc79f9fbd9 ""
   "figures/fig_tsp_ratio_curve.png" 1781071281 171637 1863acfc0d1cf6c6211ca4db1bd9a4df ""
   "figures/fig_tsp_route_loop.png" 1781596057 41698 fa1a010fbe98a5b41c9a4a607da936b5 ""
   "figures/fig_tsp_route_sample.png" 1731387064 204719 db5d4cb7a06bacbcf8ae7d9a897c97df ""
   "figures/fig_tsp_training_curve.png" 1731387064 166931 9ff8170e7d3df1ddacbbf028b4039d89 ""
   "figures/fig_uav_airsim.png" 1781607603 619898 57e3c5a6138781a2eff7569ba294ccc6 ""
   "figures/fig_uav_route_loop.png" 1781596304 137817 0d6c15172403d517dd41193a3a123df6 ""
+  "figures/pointer_network_architecture.png" 1781624635 15292 8ba7404c46c18b94cb467c92aaf8cfb3 ""
   "front/coverart.tex" 1782132774 651 8dfced6b2a973458bd05bcd3ecc13ce9 ""
   "hithesisart.cfg" 1781872862 7108 ed0cd3682ee65cea0bfa812222f9c149 ""
   "hithesisart.cls" 1781872862 21399 3dd53f5b3698079d6485d5a4f4725b7e ""
-  "report.aux" 1782202632 7061 e85d66cd34ffb283796dafc08387263a "xelatex"
-  "report.bbl" 1782202628 3581 ccc42177d051fc859763c9354dc94d4d "bibtex report"
-  "report.out" 1782202632 2627 7b6fd1ee774ebfcc681f254ca086491c "xelatex"
+  "report.aux" 1782246282 7380 5cfa1c38c8c90f007d8df2973880200d "xelatex"
+  "report.bbl" 1782246278 3581 ccc42177d051fc859763c9354dc94d4d "bibtex report"
+  "report.out" 1782246282 2627 7b6fd1ee774ebfcc681f254ca086491c "xelatex"
   "report.tex" 1782034267 1206 38f8f6a240d1a4288365821172068a8c ""
-  "report.toc" 1782202632 1454 6deb497b7f5cd4213b064d47f36bd7f8 "xelatex"
+  "report.toc" 1782246282 1453 c045a9cac1921f415b8706e6a96c3aeb "xelatex"
   (generated)
   "report.aux"
   "report.log"

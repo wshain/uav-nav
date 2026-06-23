@@ -1,0 +1,113 @@
+You are an expert Scientific Illustrator for top-tier AI conferences (NeurIPS/CVPR/ICML).
+Revise the existing SAC-DepthMaxPool architecture diagram. Keep the same overall layout (left-to-right, three colored sections + footer icons), flat vector style, academic pastel palette, white background. Fix ALL factual errors listed below — do NOT repeat mistakes from the old figure.
+
+**Task:** Regenerate / edit the diagram so every label matches the actual implementation.
+
+---
+
+**Abstract:**
+SAC + DepthMaxPool for AirSim 2D UAV navigation. CNN-free MaxPool compresses a 60×90 depth map into a 3×4 coarse obstacle grid (12 regional max-depth values), concatenated with 2 navigation state scalars → 14D shared features for SAC Actor and Twin Critics. Off-policy training with experience replay; 94% rollout success.
+
+---
+
+**Section 1 — PERCEPTION (blue box)**
+
+Input: AirSim DepthVis sensor output.
+
+Show one grayscale depth frame labeled **"Depth Frame (60 × 90)"**.
+
+Below it, show dual-channel observation:
+- Label: **obs (60, 90, 2)**
+- Sub-label (IMPORTANT — NOT stacked frames):
+  - **Ch 0:** Depth image (60×90)
+  - **Ch 1:** State row (2 values embedded in row 0; rest is padding)
+
+DO NOT label channel 1 as "previous frame", "stacked depth", or "current/previous".
+DO NOT use frame-stacking iconography.
+
+Arrow from obs → DepthMaxPool section.
+
+---
+
+**Section 2 — DEPTHMAXPOOL (CNN-FREE) (green box)**
+
+Title: **DepthMaxPool (CNN-FREE)**
+
+**Depth branch (only Ch 0):**
+- Input label: **"Depth Ch 0 (1 × 60 × 90)"** — explicitly single-channel depth only
+- Operation box: **MaxPool2d(kernel=(16, 20), stride=(16, 20))**
+- Output label: **"Pooled Grid 3 × 4 = 12 cells"**
+- Visual: draw a **3 rows × 4 columns** grid (12 cells total). NOT 3×3. NOT 9 cells.
+
+**State branch (from Ch 1 row 0):**
+- Label: **"2D State (d_norm, ψ_norm)"**
+- Sub-label: normalized distance to goal + normalized relative yaw to goal
+- DO NOT write (x, y) or "position coordinates"
+
+**Concatenation:**
+- Show **"+"** or **"concat"** between 12D pooled depth features and 2D state
+- Output: **"14-Dim Feature Vector (14D)"**
+- Visual: show **14** small stacked blocks (or a bar of 14 segments), not 6
+
+Arrow from 14D → SAC section.
+
+---
+
+**Section 3 — SAC (Soft Actor-Critic) (purple box)**
+
+Title: **SAC (Soft Actor-Critic)**
+
+Note at top of section: **"Shared DepthMaxPool → 14D features"**
+
+**Actor (Policy):**
+- Input: **14D features** (from shared extractor)
+- Network: **MLP [64, 32, 16]**, activation **tanh**
+- Output: **Squashed Gaussian** → sample → **Action (2D continuous)**
+- Action vector label: **[v_xy, yaw_rate]** — exactly 2 scalars
+  - v_xy = horizontal speed scalar (NOT v_x and v_y separately)
+  - yaw_rate = yaw angular velocity
+- DO NOT show 3D action [v_x, v_y, yaw_rate]
+
+**Twin Critic (Q-networks):**
+- Two parallel MLPs: **Q₁** and **Q₂**, each **MLP [64, 32, 16]**
+- Input to EACH critic (CRITICAL):
+  - **14D features** (from shared extractor on obs)
+  - **+ 2D action** (concatenated before MLP)
+  - Label: **"Q(s, a): concat(14D, action) → scalar"**
+- Draw an arrow from **Action [v_xy, yaw_rate]** into BOTH Q₁ and Q₂
+- Output: **Q₁ (scalar)**, **Q₂ (scalar)**
+- DO NOT show critics taking only state/features without action
+
+**Experience Replay Buffer:**
+- Cylinder icon at bottom: **"Experience Replay Buffer (Off-Policy)"**
+- Dashed arrows: buffer → Critic update; Actor/Env transitions → buffer
+
+---
+
+**Footer summary icons (5 items, left to right):**
+
+1. **CNN-FREE** — Efficient MaxPool representation (no conv layers)
+2. **Coarse Obstacle Grid** — **3×4 = 12** regional max-depth cells (draw 3×4 grid icon, NOT 3×3)
+3. **Add 2D State** — **(d_norm, ψ_norm)** for goal-relative navigation (NOT x,y position)
+4. **Shared 14D Features** — used by Actor and Twin Critics (Critic also takes action)
+5. **High Success** — 94% success rate in AirSim UAV nav
+
+---
+
+**Visual Style Requirements:**
+1. Flat vector, clean lines, academic pastel (blue/green/purple sections), white background
+2. Layout: left → right; Perception | DepthMaxPool | SAC
+3. Legible English labels; consistent typography
+4. NO photos, NO hand sketches, NO heavy 3D shading, NO unreadable micro-text
+
+**Negative constraints (errors to avoid):**
+- NO "Stacked Depth (current, previous)"
+- NO (x, y) state labels
+- NO 3-dimensional action [v_x, v_y, yaw_rate]
+- NO Twin Critic without action input
+- NO 3×3 pooled grid when text says 12 cells
+- NO MaxPool applied to both observation channels
+- NO ~6-block vector when label says 14D
+
+**Generation Instruction:**
+Produce a corrected version of the SAC-DepthMaxPool pipeline diagram. Emphasize: (1) dual-channel obs semantics, (2) 3×4=12 MaxPool grid on depth only, (3) 14D = 12D depth + 2D goal-relative state, (4) Actor outputs 2D squashed-Gaussian action, (5) Twin Critics consume features AND action.

@@ -371,8 +371,10 @@ INPUT ./figures/Overall_Architecture.png
 INPUT c:/texlive/2025/texmf-dist/fonts/tfm/public/newtx/ntx-Bold-tlf-ot1.tfm
 INPUT c:/texlive/2025/texmf-dist/fonts/tfm/public/newtx/ntx-Bold-tlf-ot1.tfm
 INPUT c:/texlive/2025/texmf-dist/fonts/tfm/public/newtx/ntx-Bold-tlf-ot1.tfm
-INPUT ./figures/fig_tsp_actor_critic_architecture.png
-INPUT ./figures/fig_tsp_actor_critic_architecture.png
+INPUT ./figures/pointer_network_architecture.png
+INPUT ./figures/pointer_network_architecture.png
+INPUT ./figures/fig_tsp_actor_critic_architecture.jpg
+INPUT ./figures/fig_tsp_actor_critic_architecture.jpg
 INPUT ./figures/fig_tsp_training_curve.png
 INPUT ./figures/fig_tsp_training_curve.png
 INPUT ./figures/fig_tsp_route_sample.png

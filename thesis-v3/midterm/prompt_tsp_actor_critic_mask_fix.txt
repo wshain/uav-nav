@@ -1,0 +1,7 @@
+Edit fig_tsp_actor_critic_architecture.png. Keep layout, colors, style unchanged. ONLY 2 fixes:
+
+1) Visit Mask legend (One Decoder Step): 0/1 is reversed. Fix: 0=not visited (selectable), 1=visited (masked out). Color squares: white/light=0, green/dark=1; swap if reversed. Legend text/colors ONLY—keep Actor masked Glimpse wiring unchanged.
+
+2) Critic: "Glimpse Attention ×3 (masked)" → "Glimpse Attention ×3". Keep Actor "Glimpse Attention (masked)" unchanged.
+
+Do NOT change anything else (encoders, decoder, losses, arrows). Minimal patch only.
