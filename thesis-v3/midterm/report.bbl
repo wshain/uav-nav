@@ -44,6 +44,12 @@
   in Neural Information Processing Systems}\nolinebreak\@.
   \bibyear{2015}\textnormal{: }\bibpages{2692\textnormal{-}2700}\nolinebreak\@.
 
+\bibitem{christofides1976}
+\bibauthor{{, et~al}{Christofides N}}\nolinebreak\@. \bibtitle{Worst-case
+  analysis of a new heuristic for the travelling salesman
+  problem}\bibmark{[J]}\nolinebreak\@. \bibjournal{Management Sciences Research
+  Report}, \bibyear{1976}, \bibvolume{388}\nolinebreak\@.
+
 \bibitem{he2021explainable}
 \bibauthor{{, et~al}{He L}{, Aouf N}{, Song B}}\nolinebreak\@.
   \bibtitle{Explainable deep reinforcement learning for {UAV} autonomous path

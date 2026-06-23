@@ -8,45 +8,45 @@ Reallocated wiz_functions (elt_size=4) to 6000 items from 3000.
 Database file #1: reference.bib
 Warning--Require citedate: he2021explainable
 Warning--Require address: haarnoja2018sac
-You've used 6 entries,
+You've used 7 entries,
             3100 wiz_defined-function locations,
-            747 strings with 7078 characters,
-and the built_in function-call counts, 20006 in all, are:
-= -- 2449
-> -- 27
-< -- 27
-+ -- 2131
-- -- 96
-* -- 383
-:= -- 2453
+            754 strings with 7252 characters,
+and the built_in function-call counts, 20813 in all, are:
+= -- 2532
+> -- 29
+< -- 29
++ -- 2207
+- -- 100
+* -- 420
+:= -- 2554
 add.period$ -- 0
-call.type$ -- 6
+call.type$ -- 7
 change.case$ -- 0
 chr.to.int$ -- 0
-cite$ -- 8
-duplicate$ -- 2876
-empty$ -- 512
-format.name$ -- 84
-if$ -- 5453
+cite$ -- 9
+duplicate$ -- 2969
+empty$ -- 540
+format.name$ -- 88
+if$ -- 5672
 int.to.chr$ -- 0
-int.to.str$ -- 6
+int.to.str$ -- 7
 missing$ -- 0
-newline$ -- 45
-num.names$ -- 6
-pop$ -- 178
+newline$ -- 48
+num.names$ -- 7
+pop$ -- 183
 preamble$ -- 1
 purify$ -- 0
 quote$ -- 0
-skip$ -- 88
+skip$ -- 98
 stack$ -- 0
-substring$ -- 2575
-swap$ -- 305
+substring$ -- 2658
+swap$ -- 338
 text.length$ -- 0
 text.prefix$ -- 0
 top$ -- 0
 type$ -- 0
 warning$ -- 2
-while$ -- 177
-width$ -- 7
-write$ -- 111
+while$ -- 184
+width$ -- 8
+write$ -- 123
 (There were 2 warnings)
