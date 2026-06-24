@@ -1,0 +1,408 @@
+% 哈尔滨工业大学 硕士学位论文中期报告正文
+% 结构依据：硕士学位论文中期报告模板.doc
+% 数据同步：thesis/THESIS_BACKBONE.md（2026-06-23）
+% 模板：hithesis-dev（thesis-v2/midterm）
+
+\section{学术研究或者实践工作进度情况}
+
+传统无人机作业多采用遍历式或区域覆盖式执行策略：按预先规划的平行扫掠或``之''字形路径对整块区域进行均匀覆盖，典型应用于农林植保喷洒、遥感测绘建图等任务，其核心优化目标是覆盖率与路径均匀性，而非离散目标点的访问次序。图~\ref{fig:classic-uav-task}展示了该类任务的路径形态——无人机沿规则栅格往复飞行，相邻航段呈平行排列，以地毯式扫描方式完成区域作业。
+
+\begin{figure}[htbp]
+  \centering
+  \includegraphics[width=0.88\textwidth]{classic_uav_task}
+  \caption{传统遍历式无人机作业示意（区域覆盖飞行路径）}
+  \label{fig:classic-uav-task}
+\end{figure}
+
+不同于上述遍历式执行模式，本课题面向农业巡检、工业运维等多目标 UAV 作业场景~\cite{huang2022ufpmp,zhu2021tph}。在这些应用中，无人机需依次访问多个离散目标点，同时避开障碍物，完成连续飞行并执行相应检测或维护任务；决策重点由``覆盖整块区域''转为``在含障环境中确定访问次序并逐点可达''。针对上述需求，本课题采用``上层 TSP 序列规划 + 下层 AirSim 强化学习导航避障''的两层架构。由于离散访问顺序与连续避障飞行在决策粒度与约束类型上存在本质差异，若在同一策略内联合优化，决策空间将同时涵盖排列组合与连续控制，训练难度与样本需求随之上升，且两类子问题的失败模式亦难以分离诊断；因此本文将二者解耦处理：上层将多目标点访问顺序抽象为 TSP，利用指针网络快速近似最优访问顺序；下层在 AirSim SimpleAvoid 场景中训练 SAC 等 DRL 策略，实现连续空间避障逐点飞行，由此形成从离散序列到连续轨迹的执行链条；在此基础上，上下层通过联合评测分析路径质量与任务成功率的协同关系，从而检验几何最优序列是否等价于可执行最优序列，并据此判断上层目标函数是否需纳入可飞性相关约束。
+
+研究路径分为两阶段。中期阶段的工作已基本完成：上层完成了无障碍 TSP 训练与 500 实例评测，下层完成了导航 benchmark 与单点能力验证，并完成了 100 组初步联合评测，同时搭建了从上层批量评测到联合评测的实验流水线，为后续规模化实验提供了可复用的数据与评测接口；同一套实例生成与指标汇总接口可在后续实验中直接复用，而不必重复搭建评测流程，从而保证前后实验在实例分布与指标口径上保持一致。进入中期之后，将在 TSP 序列训练中引入障碍物惩罚，使上层规划与下层可飞性对齐，并将联合评测扩展至 500 组，系统检验路径质量与任务成功率之间的关系；同时，当前上层固定为 $n=20$ 的 TSP20 设定，与实际多目标作业规模仍有差距，后续将逐步扩展至 50 点乃至更多目标点的训练与评测，以评估结论在不同任务规模下的可迁移性，并据此判断两层架构在更大规模下的适用边界，以及障碍物惩罚机制是否随规模放大仍保持有效。
+
+研究内容涵盖基于 Pointer Network 的 TSP20 指针网络训练与 500 实例评测，下层四种算法与感知配置对比（各 20 万训练步），100 组 Optimal 与 RL-Greedy 的初步联合评测，以及为障碍物惩罚 TSP、TSP 规模扩展与扩展联合评测预留的实验流水线；上述工作共同构成``上层几何质量、下层单段能力、整链协同表现''的三层证据链，分别对应序列近似最优性、单段避障可达性与多段串联后的任务完成率三个独立但递进的评价问题。其设计意图在于先分别验证各层能力边界，再于整链层面定位性能衰减来源，从而区分失败究竟源于序列构造不足、单段执行器失效，还是段间衔接与累积约束所致，并为后续引入障碍物惩罚提供可检验的问题假设。
+
+已完成的工作可概括如下。上层 500 实例 TSP 评测中，RL-Greedy 平均 $L/L_{\mathrm{opt}}=1.006$，并已生成 ratio 曲线（图~\ref{fig:tsp-ratio}）及训练过程与单实例路径可视化（图~\ref{fig:tsp-train-route}），表明上层序列规划在几何指标上已接近精确最优，继续压缩 ratio 的边际收益可能有限。下层算法对比中，SAC-DepthMaxPool 最终 rollout 成功率 94\%（峰值 98\%），TD3 为 75\%，SAC-mlp 为 61\%，PPO 尚未收敛（图~\ref{fig:nav-benchmark}），说明感知编码与 off-policy 结构对避障性能具有决定性影响；其中 DepthMaxPool 通过区域池化保留近障空间结构，因而相较 MLP 向量感知更能支撑高成功率。联合评测以最优 SAC 为下层策略，在 100 组实例上得到 Optimal 67\%、RL-Greedy 82\% 的整链成功率（表~\ref{tab:joint-eval}），二者均明显低于单点 95.2\%，由此可推断连续逐点任务会显著拉低避障成功率，而非下层单段策略本身失效，亦即整链瓶颈更可能位于上下层目标不一致而非执行器能力不足。单点导航方面，最优 SAC 在训练分布下 500 次评测的成功率为 95.2\%（表~\ref{tab:nav-single}），该基线因而成为区分整链失败归因的关键参照。此外，下层算法对比实验已实现训练曲线与汇总数据的自动产出，降低了后续扩展实验的人工整理成本，并为规模化联合评测预留了可复用的评测脚本与指标汇总流程。
+
+对照开题进度，上层 TSP、下层导航 benchmark 与初步联合评测均按期完成；障碍物惩罚 TSP 与扩展联合评测按研究路径安排在中期之后推进。联合评测采用经 $10^5$ 步训练得到的最优 SAC（SAC-DepthMaxPool，SimpleAvoid 场景）作为下层固定策略，以隔离上层序列差异对整链表现的影响；在该设定下，整链成功率差异可归因于上层访问顺序本身，而非下层策略选型或训练不充分，结果见表~\ref{tab:joint-eval}。
+
+\section{目前已完成的学术研究或者实践工作内容和取得的研究结果}
+
+\subsection{两层系统总体设计}
+
+系统面向多目标巡检作业。相较 A*、RRT 等传统路径规划方法~\cite{sariff2006overview}，后者通常面向单次起点到终点或局部重规划，难以直接处理多航点访问顺序与逐段连续避障的耦合约束，亦缺乏对访问次序这一组合决策的显式建模；因此本文分为上层序列规划与下层连续导航：上层输入 $N=20$ 个二维目标点，用指针网络输出访问排列 $\pi$；下层以 $\pi$ 中各点为子目标，调用 SAC 在 AirSim 中依次避障飞行。该分层设计亦有助于分阶段训练与独立调优，避免在单一策略中同时学习离散排序与连续控制，同时在工程上也便于分别迭代上层解码策略与下层控制网络，缩短单次实验周期，并在出现问题时能够沿层级边界定位故障来源。实验数据流为：上层批量生成评测实例 $\to$ 构建标准测试集 $\to$ 上下层联合评测，使同一组实例可同时比较不同上层序列在相同下层执行器下的整链表现，从而在同一分布下形成可比的整链指标，并排除下层执行器差异对序列对比的干扰。中期之后将在上层 TSP 训练/解码中引入障碍物惩罚，使路径质量指标与下层任务成功率更好对齐。
+
+图~\ref{fig:system-arch}从左至右展示三层信息流：多目标任务输入（航点集合 $S$ 与含障环境）；中央为分层架构，上层 Pointer Network TSP 输出访问序列 $\pi$ 及有序航点 $\pi(S)$，虚线框表示障碍物感知代价对序列规划的扩展输入，亦即中期之后拟将障碍相关代价回传至序列决策层；下层 SAC 策略在 AirSim 静态障碍环境中按子目标链逐段避障飞行；右侧为端到端执行轨迹，用于对照上层几何路径与下层实际航程之间的偏差。该对照亦为后续引入障碍物惩罚提供可视化依据，用以观察几何路径与含障可飞路径之间的系统性偏离，并判断偏差是否集中于特定段间通道而非均匀分布于全程。
+
+\begin{figure}[htbp]
+  \centering
+  \includegraphics[width=0.98\textwidth]{Overall_Architecture}
+  \caption{两层系统总体架构}
+  \label{fig:system-arch}
+\end{figure}
+
+\subsection{上层：基于指针网络的多目标 TSP 规划}
+
+多目标几何路径建模为 TSP~\cite{dewangan2019gwo}，其目标是在给定航点集合上确定访问次序以最小化闭合回路长度。上层采用 Bello 等人的 NCO 框架~\cite{bello2017nco}与 Vinyals 等人的指针机制~\cite{vinyals2015pointer}，实现基于 Actor-Critic REINFORCE~\cite{sutton2018rl} 的指针网络训练与多种解码策略。中期 500 实例评测采用与 SimpleAvoid 同尺度的障碍地图采样（$n=20$），以保证上层训练分布与下层执行环境在空间尺度上保持一致，从而避免因尺度不一致而在上下层对接时引入额外的分布偏移，使上层 ratio 与下层整链指标可在同一任务语境下对照解读；对照实验可切换为单位正方形均匀采样（$[0,1]^2$），用于分离障碍分布因素对 TSP 几何质量的影响。
+
+\subsubsection{指针网络 TSP 策略架构}
+
+本小节考虑对称 TSP：给定 $n=20$ 个二维城市坐标 $\mathbf{s}_i=(x_i,y_i)$，求访问排列 $\pi$ 使闭合回路欧氏长度 $L(\pi)$ 最小。网络输入为 $(B,n,2)$ 的 batch，不设单独 depot 节点，因而输出排列直接对应各目标点的访问次序，训练目标亦可直接以回路长度监督，而无需额外处理仓库节点或起终点对齐问题。
+
+指针网络（Pointer Network, Ptr-Net）是一种改进的 Seq2Seq 架构，适用于输出元素完全取自输入序列的组合优化问题。如图~\ref{fig:pointer-arch}所示，编码器（蓝色 LSTM 单元）将输入序列 $(x_1,\ldots,x_n)$ 映射为隐藏状态 $(\mathbf{h}_1,\ldots,\mathbf{h}_n)$；解码器（粉色 LSTM 单元）以特殊起始符 $\langle g\rangle$ 为初始输入，逐步解码 $n$ 步。与传统注意力通过加权求和生成上下文向量不同，Ptr-Net 将注意力分布作为``指针''，在每一步直接从输入序列中选择一个位置作为输出；上一步被选中的元素作为下一步解码器输入，从而保证输出为输入集合的一个排列。图中示例输入为 $(x_1,\ldots,x_5)$，解码依次指向 $x_4,x_5,x_1,x_2,x_3$，最终输出置换 $(x_4,x_5,x_1,x_2,x_3)$。该机制使输出词表大小随输入长度动态变化，天然适用于 TSP 等需要输出访问排列的任务~\cite{vinyals2015pointer,bello2017nco}。
+
+\begin{figure}[htbp]
+  \centering
+  \includegraphics[width=0.95\textwidth]{pointer_network_architecture}
+  \caption{指针网络编码—解码与 pointing 选择机制示意}
+  \label{fig:pointer-arch}
+\end{figure}
+
+在本课题 TSP 实现中，编码端采用一维卷积层 Conv1d$(2\!\to\!128,k\!=\!1)$ 将各城市嵌入 128 维，再经 LSTM$(128\!\to\!128)$ 编码为节点序列 $\mathbf{h}_1,\ldots,\mathbf{h}_n$（表~\ref{tab:tsp-arch}）。解码端以 LSTM 末态 $(h,c)$ 初始化 LSTM 单元，逐步解码 $n$ 步：每步先用 Glimpse 注意力（$w_{ref}$ Conv1d + $w_q$ Linear + $v\!\cdot\!\tanh$）聚合未访问节点，再经指针层输出 logits $=C\!\cdot\!\tanh(\mathrm{scores})$（$C\!=\!10$），对已访问城市施加 mask 以避免重复访问；训练时按 Categorical 采样以探索序列空间，推理 Greedy 时 argmax 以获得确定性输出。推理阶段 scores 除以温度 $T\!=\!2.0$，以平滑分布并抑制过早收敛至次优排列。
+
+Critic 基线与 Encoder 同构，采用 embed LSTM，接 3 步 Glimpse process block与两层 FFN，输出标量 $b(s)$ 作为 REINFORCE~\cite{sutton2018rl} 基线，用于降低梯度方差；相较无基线的 REINFORCE，该设计有助于缓解图~\ref{fig:tsp-train-route}（a）中可见的高频训练抖动，使策略更新更稳定，并避免因个别高回报样本导致的策略震荡。训练目标方面，Actor 损失为 $\mathbb{E}[(L(\pi)-b(s))\log p(\pi)]$，Critic 损失为 $\mathrm{MSE}(b(s),L(\pi))$；采用 Adam 优化，TSP20 下 batch$=128$、lr$=10^{-3}$、每 5000 步衰减 0.96、共 100k 步，梯度裁剪 $\|\nabla\|_2\!\le\!1.0$。如图~\ref{fig:pointer-net}所示，城市坐标经 Actor 分支（Encoder-PointerDecoder）输出排列 $\pi$ 与 $\log p(\pi)$，Critic 分支估计基线 $b(s)$，以回路长度 $L(\pi)$ 驱动 REINFORCE 更新；Decoder 以 $\langle g\rangle$ 为起点逐步 pointing 未访问节点，Visit Mask 保证 $\pi$ 为有效排列~\cite{vinyals2015pointer,bello2017nco}。
+
+推理解码提供三种策略：RL-Greedy 为逐步贪心解码，作为默认上层输出；RL-Sampling 进行 256 次随机采样并取最短回路（balanced 预设），用于评估采样解码相对贪心的增益上限；RL-AS 在预训练权重基础上进行 300 步实例级 Active Search，EMA 基线 $\alpha\!=\!0.99$，用于检验实例级微调能否进一步逼近最优。架构与训练/解码超参分别见表~\ref{tab:tsp-arch}、表~\ref{tab:tsp-hparam}。
+
+\begin{figure}[htbp]
+  \centering
+  \includegraphics[width=\textwidth]{fig_tsp_actor_critic_architecture}
+  \caption{指针网络 TSP 训练架构（Actor-Critic REINFORCE）}
+  \label{fig:pointer-net}
+\end{figure}
+
+\begin{table}[htbp]
+  \centering
+  \caption{指针网络 TSP 编码—解码—基线结构}
+  \label{tab:tsp-arch}
+  \begin{tabular}{llp{5.5cm}}
+    \toprule
+    层级 & 模块 & 说明 \\
+    \midrule
+    输入 & $(B,n,2)$ 城市坐标 & 障碍地图或单位正方形采样 \\
+    Encoder & Conv1d + LSTM & $2\!\to\!128\!\to\!128$，节点嵌入 \\
+    Decoder & LSTMCell + Glimpse + Pointer & mask 已访问；logits $=C\!\tanh(\cdot)$ \\
+    Critic & Encoder + 3$\times$Glimpse + FFN & 标量基线 $b(s)$ \\
+    目标 & 回路长度 $L(\pi)$ & 对称 TSP 闭合回路欧氏长度 \\
+    \bottomrule
+  \end{tabular}
+\end{table}
+
+\begin{table}[htbp]
+  \centering
+  \caption{指针网络 TSP 训练与解码超参（TSP20 / 中期评测）}
+  \label{tab:tsp-hparam}
+  \begin{tabular}{lcc}
+    \toprule
+    参数 & 训练 & 500 实例评测 \\
+    \midrule
+    城市数 $n$ & 20 & 20 \\
+    batch / embed / hidden & 128 / 128 / 128 & — \\
+    学习率 / 衰减 & $10^{-3}$，5000 步$\times$0.96 & — \\
+    训练步数 & $10^5$（NCO：$2.5\times10^5$） & — \\
+    $C$ / 温度 $T$ & 10 / 2.0 & 推理用 $T$ \\
+    Critic process 步数 & 3 & — \\
+    RL-Greedy & — & 逐步贪心解码 \\
+    RL-Sampling & — & 256 次采样取最短 \\
+    RL-AS & — & 300 步，lr$=10^{-5}$，$\alpha=0.99$ \\
+    \bottomrule
+  \end{tabular}
+\end{table}
+
+RL-Greedy 为默认上层解码输出，其规划序列将用于后续联合评测，以便在固定下层执行器条件下检验上层序列对整链成功率的影响；该设定亦保证上层输出与单点 benchmark 所验证的执行器保持一致，有利于整链结论的可比性。
+
+\subsubsection{实验：500 实例批量评测}
+
+中期 500 实例评测在障碍地图分布上进行，对各解码策略与 Christofides、2-opt、Held-Karp 最优等基线进行对比，汇总见表~\ref{tab:tsp-length}、表~\ref{tab:tsp-ratio}；训练过程与单实例可视化见图~\ref{fig:tsp-train-route}，相对最优比率曲线见图~\ref{fig:tsp-ratio}。该批评测旨在量化学习式序列构造相对经典启发式与精确最优的逼近程度，并据此判断上层序列规划是否已满足后续整链对接的前置条件；评测实例与联合评测共用同一批生成逻辑，以保证上下层实验在实例分布上前后一致，从而使上层 ratio 与下层整链指标可在同一任务分布下对照解读。
+
+对照基线设置如下：Held-Karp 动态规划~\cite{lin1973karp}在 $n=20$ 规模求得精确最短闭合回路，作为 $L/L_{\mathrm{opt}}$ 分母；Christofides 算法~\cite{christofides1976} 经最小生成树、奇度点匹配与 Euler 回路 shortcut 构造 Hamiltonian 环，为度量 TSP 的 1.5-近似；2-opt 以城市自然编号为初值，通过子段反转迭代至局部收敛，用于表征弱初值条件下局部搜索的典型表现。
+
+\begin{figure}[htbp]
+  \centering
+  \begin{minipage}{0.48\textwidth}
+    \centering
+    \includegraphics[width=\linewidth]{fig_tsp_training_curve}\\
+    （a）训练平均回路长度曲线
+  \end{minipage}\hfill
+  \begin{minipage}{0.48\textwidth}
+    \centering
+    \includegraphics[width=\linewidth]{fig_tsp_route_sample}\\
+    （b）单实例 RL-Greedy 规划路径
+  \end{minipage}
+  \caption{指针网络 TSP 训练过程与单实例路径可视化（$n=20$）}
+  \label{fig:tsp-train-route}
+\end{figure}
+
+\begin{table}[htbp]
+  \centering
+  \caption{上层 TSP 各方法平均回路长度（500 实例）}
+  \label{tab:tsp-length}
+  \begin{tabular}{lcccc}
+    \toprule
+    方法 & 均值 & 标准差 & 最小值 & 最大值 \\
+    \midrule
+    初始随机序   & 1337.77 & 142.59 & 991.69  & 1776.93 \\
+    Christofides & 421.27  & 33.20  & 343.81  & 550.73  \\
+    2-opt        & 452.53  & 42.19  & 366.71  & 599.49  \\
+    RL-Greedy    & 408.18  & 26.26  & 343.81  & 501.42  \\
+    RL-Sampling  & 406.05  & 25.53  & 341.42  & 501.02  \\
+    RL-AS        & 406.30  & 25.65  & 341.42  & 501.42  \\
+    Optimal      & 405.65  & 25.27  & 341.42  & 501.02  \\
+    \bottomrule
+  \end{tabular}
+\end{table}
+
+\begin{table}[htbp]
+  \centering
+  \caption{上层 TSP 相对最优比率及配对统计（500 实例）}
+  \label{tab:tsp-ratio}
+  \begin{tabular}{lc}
+    \toprule
+    方法 / 统计项 & 数值 \\
+    \midrule
+    RL-Greedy ratio 均值      & 1.006 \\
+    RL-Sampling ratio 均值    & 1.001 \\
+    RL-Greedy 达到最优        & 267/500 \\
+    RL-Greedy 短于 Christofides & 434/500 \\
+    \bottomrule
+  \end{tabular}
+\end{table}
+
+\begin{figure}[htbp]
+  \centering
+  \includegraphics[width=0.92\textwidth]{fig_tsp_ratio_curve}
+  \caption{TSP 相对最优比率曲线（500 实例）}
+  \label{fig:tsp-ratio}
+\end{figure}
+
+图~\ref{fig:tsp-train-route}展示 REINFORCE 训练过程与单实例解码效果。图（a）为测试批平均回路长度随训练轮数的变化：0--750 轮由约 900--1050 快速降至 550 附近，750--7500 轮继续缓降至约 440--450，7500 轮后进入平台期并在 2 万轮附近稳定在 420--430，表明指针网络已习得有效的序列构造策略。曲线全程存在高频抖动，来自 REINFORCE 采样式梯度估计的固有方差，整体无发散或性能回退，说明训练过程稳定收敛。该曲线与 500 实例评测中 RL-Greedy 均值 408.18 的量级一致；完整 $10^5$ 步训练后，几何质量将进一步收敛至表~\ref{tab:tsp-length} 所示水平。图（b）为单组 20 城市实例的 RL-Greedy 闭合回路：红色折线依次连接各航点并回到起点，形成有效 Hamiltonian 环。多数相邻段遵循``就近连接''的局部几何直觉，左中部与右缘可见少量自交叉或折返，对应尚未达到 Held-Karp 最优的局部冗余，与全量评测均值 ratio 1.006、53.4\% 实例达最优的统计相符。该访问序转换为逐点目标序列后，即作为下层 SAC 的子目标输入，构成上下层衔接的直接接口；因此上层几何质量虽高，仍须通过整链评测检验其是否转化为可执行成功率。
+
+按算法机理，经典基线的几何指标差异具有内在一致性。Held-Karp 动态规划~\cite{lin1973karp}在 $n=20$ 时以``已访问子集—当前城市''状态枚举闭合访问序，求得精确最短回路（均值 405.65，标准差 25.27）；其复杂度 $O(n^2 2^n)$ 制约可扩展性，故作为 $L/L_{\mathrm{opt}}$ 的分母与上界参照。Christofides 为度量 TSP 的多项式时间 1.5-近似算法，经最小生成树、奇度点最小权匹配与 Euler 回路 shortcut 构造 Hamiltonian 环，最坏情形限于最优的 1.5 倍以内；500 实例均值回路长度 421.27（ratio 约 1.04），虽显著优于随机初序，相对精确最优仍保留稳定裕量。2-opt 为子段反转型局部搜索，性能对初始序敏感；本实验取城市自然编号（随机采样次序，与几何邻近性弱相关）为初值，迭代至无法改进后均值 452.53（ratio 约 1.12），标准差 42.19 高于 Christofides，反映出弱初值条件下的局部最优倾向。
+
+经 REINFORCE 训练，RL-Greedy 回路长度均值 408.18，低于 Christofides 与 2-opt，并逼近 Held-Karp 最优；标准差 26.26 与最优解 25.27 相近，表明学习策略在均值与波动幅度上均接近精确解。$L/L_{\mathrm{opt}}$ 均值 1.006、中位数 1.000，53.4\% 实例（267/500）与最优等长，86.8\%（434/500）短于 Christofides，而 Christofides 仅 49/500 优于 RL-Greedy，说明指针网络习得的序列构造策略在本文评测设定下持续优于经典启发式，且优势具有实例级统计支撑而非个别案例偶然；其部分原因在于策略针对训练分布中的城市空间布局进行学习，而非仅依赖通用近似保证。
+
+图~\ref{fig:tsp-ratio} 的排序曲线呈现清晰分层：随机初始序（均值 ratio 3.31）与启发式（Christofides 1.04、2-opt 1.12）位于上方，RL 系列（Greedy/Sampling/RL-AS）紧贴最优曲线下方。就解码策略而言，256 次采样的 RL-Sampling 将均值 ratio 降至 1.001，446/500 达最优，相对 Greedy 的 267/500 有 179 例提升，但均值差距仅 0.005，说明 Greedy 已接近采样解码的收益上限；RL-AS（300 步）与 Sampling 均值接近（1.0015 vs 1.0010），实例级微调带来的边际收益有限。由此可见，上层指针网络在中期 TSP20 设定下已具备可用的序列规划能力；后续主要瓶颈不在几何 ratio，而在与下层可飞性的对齐，以及目标规模从 20 点向 50 点及以上扩展后的训练收敛与评测可行性，亦即整链任务成败将更多取决于上层目标函数是否纳入障碍相关代价，而非继续压缩几何逼近误差；这一判断亦得到联合评测中几何最优序列整链成功率反而低于 RL-Greedy 的初步结果支撑。
+
+\subsection{下层：AirSim 环境上的 DRL 导航实验}
+
+参考 He 等人~\cite{he2021explainable}的 AirSim 深度强化学习导航框架与 Liu 等人的层次 DRL 导航~\cite{liu2022hrl}，本人在 OpenAI Gym 标准接口~\cite{brockman2016gym}下封装 SimpleAvoid 多旋翼仿真环境，以统一上层序列输出与下层策略训练的交互协议；同类 UAV 仿真平台还可参见 Chen 等人~\cite{chen2022uavsim}。该封装使上层输出的访问排列可直接映射为逐段子目标序列，从而与联合评测流水线对接，并在 episode 粒度上保持与单点 benchmark 一致的状态转移与奖励定义。下层采用 SAC~\cite{haarnoja2018sac,fang2024sac} 为主算法，奖励采用综合塑形函数，在引导到达目标的同时抑制碰撞与异常姿态，以在探索效率与安全行为之间维持可接受的权衡。下层主策略为 SAC-DepthMaxPool（深度 MaxPool 编码器）：在 Stable-Baselines3 策略框架上挂载自定义 DepthMaxPool 特征提取器，按统一超参数配置进行训练。
+
+\subsubsection{SAC-DepthMaxPool 策略架构}
+
+环境接口采用深度图感知：AirSim 深度传感器输出经裁剪、缩放为 $60\times90$ 深度图（有效距离 15\,m，近障碍高亮），与 2 维状态特征共同构成双通道观测 $\mathbf{o}\in\mathbb{R}^{60\times90\times2}$。状态特征嵌入第二通道首行，2D 导航下为归一化水平距离与相对偏航角，为策略提供目标方向的全局线索，以弥补纯深度表征对远距离目标方位信息的不足；动作 $\mathbf{a}=(v_{xy},\dot\psi)$，分别为水平速度与偏航角速度（$v_{xy}\in[0.5,5]$\,m/s，$\dot\psi\in[-30^\circ,30^\circ]$/s）。动力学采用简化多旋翼模型（$dt=0.1$\,s），奖励含距离塑形与障碍/姿态惩罚，以在样本效率与行为安全性之间取得平衡。
+
+DepthMaxPool 对深度通道做 $16\times20$ 区域最大池化（无卷积）：$60\times90$ 深度图降采样为 $3\times4=12$ 维区域最大深度，以较低维表示保留近障区域的相对空间布局，使策略仍能感知各方向上的最近障碍距离；再从第二通道读取 2 维状态，拼接为 14 维向量供后续 MLP 使用（表~\ref{tab:sac-arch}）。DepthMaxPool 作为 Actor 与 Twin Critic 的共享特征提取器，使价值估计与策略优化基于同一障碍表征，有助于提高 off-policy 更新的样本利用效率，并减少 Actor 与 Critic 因特征不一致而产生的估计偏差；Actor 经 MLP $[64,32,16]$（tanh）输出 Squashed Gaussian 分布，Critic 为双 Q 网络。Off-policy 训练采用经验回放~\cite{fedus2020replay}（buffer 50000，batch 512），每 100 步采集后更新 100 次梯度；探索阶段附加 $\sigma=0.15$ 高斯动作噪声。图~\ref{fig:sac-depthmaxpool}概括感知、DepthMaxPool 与 SAC 三层数据流：深度图经区域 MaxPool 压缩为 12 维障碍特征，与 2 维状态拼接后供 Actor/Critic 共享；算法对比实验中该配置 rollout 成功率 94\%。细节见表~\ref{tab:sac-arch}、表~\ref{tab:sac-hparam}。
+
+\begin{figure}[htbp]
+  \centering
+  \includegraphics[width=0.95\textwidth]{SAC_DepthMaxPool}
+  \caption{SAC-DepthMaxPool 策略架构}
+  \label{fig:sac-depthmaxpool}
+\end{figure}
+
+\begin{table}[htbp]
+  \centering
+  \caption{SAC-DepthMaxPool 观测—特征—策略结构}
+  \label{tab:sac-arch}
+  \begin{tabular}{llp{5.8cm}}
+    \toprule
+    层级 & 模块 & 说明 \\
+    \midrule
+    感知 & AirSim 深度传感器 & resize $60\times90$，映射 $[0,15]$\,m $\to$ $[0,255]$ \\
+    观测 & 双通道 $(H,W,2)$ & 通道 0：深度；通道 1 第 0 行：状态 \\
+    特征 & DepthMaxPool & MaxPool $\to$ 12 维 + 状态 2 维 = 14 维 \\
+    Actor & MLP$[64,32,16]$+Squash & 输出 $(v_{xy},\dot\psi)$ \\
+    Critic & Twin Q，共享特征 & $Q_1,Q_2$：特征与动作拼接后 MLP \\
+    \bottomrule
+  \end{tabular}
+\end{table}
+
+\begin{table}[htbp]
+  \centering
+  \caption{SAC-DepthMaxPool 训练超参（对比实验）}
+  \label{tab:sac-hparam}
+  \begin{tabular}{lc}
+    \toprule
+    参数 & 对比实验 \\
+    \midrule
+    训练步数 & $2\times10^5$ \\
+    学习率 / $\gamma$ & $10^{-3}$ / 0.99 \\
+    buffer / batch & 50000 / 512 \\
+    采集间隔 / 梯度更新 & 100 步 / 100 次 \\
+    网络结构 & $[64,32,16]$ \\
+    动作噪声 $\sigma$ & 0.15 \\
+    accept / crash 半径 & 2\,m / 2\,m \\
+    \bottomrule
+  \end{tabular}
+\end{table}
+
+相较 SAC-mlp（5 维手工向量特征），DepthMaxPool 保留完整深度图的空间结构，对比实验中最终成功率 94\% vs 61\%，差距主要源于障碍空间信息是否被有效编码。本课题据此选定 SAC-DepthMaxPool 作为下层主策略及联合评测固定执行器，以保证整链评测结论反映上层序列差异而非下层算法选型波动；若下层执行器不稳定，上层序列对比将难以形成有效对照。
+
+\subsubsection{实验：算法与感知对比}
+
+对比 SAC、TD3、PPO 及 SAC-mlp（向量感知消融）四组配置，汇总见表~\ref{tab:nav-benchmark}，训练过程 rollout 指标曲线见图~\ref{fig:nav-benchmark}。四组实验共享环境与训练步数，以便将性能差异归因于算法结构与感知表示。
+
+\begin{table}[htbp]
+  \centering
+  \caption{下层导航算法对比（SimpleAvoid，各 20 万步，rollout 指标）}
+  \label{tab:nav-benchmark}
+  \begin{tabular}{llccccc}
+    \toprule
+    配置 & 算法 & 最终成功率 & 峰值成功率 & 最终平均奖励 & 撞毁率 & 平均步数 \\
+    \midrule
+    SAC-DepthMaxPool & SAC & 94\% & 98\% & +9.55 & 6\% & 201 \\
+    TD3-DepthMaxPool & TD3 & 75\% & 84\% & +3.72 & 24\% & 164 \\
+    SAC-mlp     & SAC & 61\% & 74\% & $-$13.95 & 37\% & 227 \\
+    PPO-DepthMaxPool & PPO & 0\%  & 0\%  & $-$244.24 & 5\% & 392 \\
+    \bottomrule
+  \end{tabular}
+\end{table}
+
+\begin{figure}[htbp]
+  \centering
+  \begin{minipage}{0.48\textwidth}
+    \centering
+    \includegraphics[width=\linewidth]{fig_expA_success_rate}\\
+    （a）成功率
+  \end{minipage}\hfill
+  \begin{minipage}{0.48\textwidth}
+    \centering
+    \includegraphics[width=\linewidth]{fig_expA_crash_rate}\\
+    （b）碰撞率
+  \end{minipage}
+
+  \vspace{0.6em}
+  \begin{minipage}{0.48\textwidth}
+    \centering
+    \includegraphics[width=\linewidth]{fig_expA_ep_rew_mean}\\
+    （c）平均回合奖励
+  \end{minipage}\hfill
+  \begin{minipage}{0.48\textwidth}
+    \centering
+    \includegraphics[width=\linewidth]{fig_expA_ep_len_mean}\\
+    （d）平均回合步数
+  \end{minipage}
+  \caption{四种配置训练 rollout 指标曲线}
+  \label{fig:nav-benchmark}
+\end{figure}
+
+四组 rollout 曲线在四项指标上形成稳定排序，SAC-DepthMaxPool 综合最优，且各指标之间逻辑自洽，因而可作为后续联合评测的下层基线；其中成功率与碰撞率的负相关关系亦支持以该配置作为整链任务的固定执行器，并表明在该设定下整链表现差异更可能来自上层序列而非下层控制不稳定。
+
+就成功率与收敛速度而言，SAC 曲线在中期约 4.4 万步首次超过 75\%，7.2 万步超过 90\%，20 万步终值 94\%（峰值 98\%）；TD3 直至 14.7 万步才达到 75\%，全程未突破 90\%。在共享 DepthMaxPool 感知的前提下，SAC 比 TD3 提前约 10 万步进入可用区间，终值成功率高出 19 个百分点，说明 off-policy 双 Q 结构与熵正则在本环境中更利于样本效率。SAC-mlp 终值 61\%（峰值 74\%），全程未达 75\%，与 SAC-DepthMaxPool 形成 33 个百分点的感知消融差距，表明 12 维区域深度特征对保留障碍空间结构至关重要。PPO 成功率恒为 0\%，策略未习得有效到达行为，当前配置下难以承担主线路导航任务。
+
+碰撞率与成功率呈显著负相关：SAC 终值 6\%，TD3 24\%，SAC-mlp 37\%。TD3 成功率低于 SAC 但碰撞率却为其 4 倍，说明 TD3 在部分回合中以撞障或失败终止，而非稳定到达。PPO 碰撞率 5\% 看似较低，但结合 0\% 成功率与 392 步的平均回合长度，更可能以超时或边界条件结束回合，而非安全到达，因此低碰撞率并不等价于有效避障。
+
+平均奖励方面，SAC 在约 4.9 万步首次转正，终值 +9.55（训练期峰值 +13.40）；TD3 约 13.8 万步才转正，终值 +3.72。SAC-mlp 与 PPO 终值分别为 $-$13.95 与 $-$244.24，全训练期均值亦为负（$-$30.5 与 $-$226.8），反映策略长期受距离塑形与障碍惩罚压制。SAC 的奖励曲线与成功率曲线同步上升，可作为训练监控的有效代理指标，有助于在正式 rollout 评测之前及早发现策略退化。
+
+平均步数方面，SAC 终值约 201 步/回合，TD3 约 164 步。TD3 步数更短但成功率更低，说明其回合往往更早以失败结束；PPO 约 392 步，约为 SAC 的 1.95 倍，与零成功率共同说明策略在环境中无效徘徊。综合四项指标，算法对比支持选用 SAC-DepthMaxPool 作为下层主策略；PPO 在当前超参下不适用，留作后续调参，不纳入主结论。
+
+\subsubsection{单点导航能力评测}
+
+在联合评测之前，需验证最优 SAC 的单点``起点$\to$随机目标''避障能力，以建立整链失败归因的参照基线。评测为 500 次 episode：固定起点 $(0,0,5)$，目标按训练分布随机采样，每次独立飞行至单个目标点。结果见表~\ref{tab:nav-single}。
+
+\begin{table}[htbp]
+  \centering
+  \caption{单点导航评测}
+  \label{tab:nav-single}
+  \begin{tabular}{cccccc}
+    \toprule
+    评测次数 & 起点 & 到达成功率 & 碰撞率 & 成功时平均步数 & 成功时平均航程 \\
+    \midrule
+    500 & $(0,0,5)$ & 95.2\% & 4.8\% & 228.40 & 54.38\,m \\
+    \bottomrule
+  \end{tabular}
+
+\end{table}
+
+500 次独立 episode 中，最优 SAC 到达成功率 95.2\%（476/500），碰撞率 4.8\%，与 20 万步对比实验终值（94\% / 6\%）基本一致，说明 $10^5$ 步 checkpoint 在训练分布上仍保持可用泛化，因而足以承担联合评测中的固定执行器角色。成功回合平均 228.4 步、航程 54.38\,m，对应 SimpleAvoid 中单段``起点$\to$随机目标''的典型尺度。该结果从单点能力侧验证了联合评测所采用下层策略的可靠性：整链任务失败更可能来自序列段间衔接与累积障碍约束，而非单段导航本身完全不可用，从而为后续引入障碍物惩罚 TSP 提供了问题定位依据；若单点成功率本身偏低，则整链失败将难以区分是执行器不足还是序列设计不当。
+
+\subsection{上下层联合评测}
+
+本课题选定经 $10^5$ 步训练得到的最优 SAC（SAC-DepthMaxPool，SimpleAvoid，深度 MaxPool 感知）作为联合评测下层固定策略，以在对比不同上层序列时隔离下层算法选型与训练充分性的影响。联合评测从预生成的 500 组标准实例中抽取 100 组，每组包含 Held-Karp 几何最优序列与指针网络 RL-Greedy 规划序列，在相同模型与环境下逐组按序逐点导航，统计整链完成率、碰撞率及成功时总航程。本阶段联合评测旨在检验路径质量（上层 ratio/回路长度）与任务成功率（下层整链完成率）之间的关系，为中期之后引入障碍物惩罚 TSP 提供实证依据；若几何更优序列反而导致更低整链成功率，则表明上层目标函数需要纳入可飞性约束，而非继续单纯最短化欧氏回路，亦即规划空间中的最短与执行空间中的可达并不必然一致。
+
+评测于 2026-06-10 完成，汇总见表~\ref{tab:joint-eval}。在成功组上，几何最优序列平均总航程 499.86\,m（$n=67$，$\sigma=35.32$）；RL-Greedy 序列 497.44\,m（$n=82$，$\sigma=39.82$），二者航程接近但成功样本数不同，说明航程统计需与成功率联合解读，否则可能将失败组排除后的均值差异误判为路径优劣。
+
+\begin{table}[htbp]
+  \centering
+  \caption{上下层联合评测（100 组；下层：最优 SAC，$10^5$ 步）}
+  \label{tab:joint-eval}
+  \begin{tabular}{lccccc}
+    \toprule
+    规划序列 & 成功率 & 碰撞率 & 成功/总数 & 平均航程/m & 标准差/m \\
+    \midrule
+    Held-Karp 几何最优 & 67.0\% & 24.0\% & 67/100 & 499.86 & 35.32 \\
+    RL-Greedy（指针网络） & 82.0\% & 11.0\% & 82/100 & 497.44 & 39.82 \\
+    \bottomrule
+  \end{tabular}
+
+  注：平均航程仅统计成功组；失败组航程记为无效。
+\end{table}
+
+\begin{figure}[htbp]
+  \centering
+  \begin{minipage}{0.48\textwidth}
+    \centering
+    \includegraphics[width=\linewidth]{fig_tsp_route_loop}\\
+    （a）上层规划路径
+  \end{minipage}\hfill
+  \begin{minipage}{0.48\textwidth}
+    \centering
+    \includegraphics[width=\linewidth]{fig_uav_route_loop}\\
+    （b）下层飞行轨迹
+  \end{minipage}
+
+  \vspace{0.5em}
+  \includegraphics[width=0.92\textwidth]{fig_uav_airsim}\\
+  （c）AirSim 实时仿真
+  \caption{联合评测可视化示例}
+  \label{fig:joint-traj}
+\end{figure}
+
+图~\ref{fig:joint-traj}给出联合评测典型案例：图（a）为上层 RL-Greedy 在无障碍度量空间中的闭合回路（长度 401.60）；图（b）为下层 SAC 在 SimpleAvoid 含障环境中的实际飞行轨迹俯视图（路程 581.22\,m），可见绕障与逐点访问；图（c）为 AirSim 实时仿真界面，展示深度感知与避障飞行过程。三类可视化共同说明上层几何路径与下层含障轨迹之间存在系统性尺度与形态差异，该差异并非偶发控制误差，而是规划空间与执行空间约束不一致的结构性结果。
+
+在相同下层 SAC 策略下，Held-Karp 最优序列整链成功率 67\%（67/100），RL-Greedy 为 82\%（82/100），差距 15 个百分点；对应碰撞率 24\% 与 11\%。RL-Greedy 成功率高于几何最优序列，但二者均明显低于单点导航评测的 95.2\%（476/500），分别低约 28 与 13 个百分点。这说明执行连续逐点任务会显著降低避障成功率：段间过渡、累计偏航与障碍密集子段叠加，使整链完成率远低于单段能力上限，也反证单点 95.2\% 并不能直接外推为整链可达率。进一步来说，几何最短序列倾向于优先连接欧氏距离较短的相邻航点对，相应段间通道在含障环境中未必更易于通过，这有助于解释 Held-Karp 序列碰撞率更高而整链成功率更低的现象。
+
+成功组平均总航程相近（497.44\,m 与 499.86\,m，仅差 0.5\%），说明上层几何序列规划与下层连续避障优化相互割裂，整链优劣因而难以由成功组航程差异来刻画。上层仅在无障碍度量空间中最短化回路长度，下层才在含障环境中逐段执行；两类序列的优劣主要体现在能否完成与碰撞中断（碰撞率 24\% vs 11\%），而非成功时飞得更远或更短。典型案例（图~\ref{fig:joint-traj}）也体现了这一错位：上层回路长度 401.60，下层实际飞行 581.22\,m（约为几何长度的 1.45 倍），差距来自绕障、偏航与段间过渡，而非单纯的速度或控制误差，因而仅优化上层几何长度难以直接转化为整链任务成功率提升，必须在序列层面显式纳入障碍相关代价。
+
+本课题面向无人机多目标作业。相较地面小车，无人机一旦发生碰撞还存在炸机风险~\cite{fang2024sac}，任务中断后的复飞、换机等成本更高。因此，除安全约束外，整链成功率较路径几何最优更具工程优先级；在路径长度仍可接受的前提下，可优先保障任务完成，适度牺牲一部分路径最优性以换取成功率。上述结果指向中期之后的优化方向：在 TSP 训练中引入障碍物惩罚，使上层规划与下层可飞性对齐，在路径长度较优的基础上提升连续任务整链成功率。100 组样本的初步趋势需在扩展至 500 组后进一步检验，以排除小样本波动对结论稳定性的影响，并为 ratio 与整链成功率的协同或冲突关系提供更稳健的统计支撑。
+
+\subsection{阶段性小结}
+
+中期工作在上下层分别取得可量化进展，联合评测也暴露了规划与执行目标错位的问题，为论文主体阶段的 CMDP 式障碍物惩罚提供了直接动机，亦表明后续工作重心应从继续压缩几何 ratio 转向上下层目标对齐，并在更大样本与更大规模设定下验证该判断的稳健性。
+
+上层，指针网络在 500 组障碍地图实例上达到 $L/L_{\mathrm{opt}}=1.006$（中位数 1.000，53.4\% 实例最优），已优于 Christofides 等经典启发式，表明序列构造能力不再是当前主要短板，继续投入于 ratio 微调的预期收益有限。下层，SAC-DepthMaxPool 在算法与感知对比中表现最好（94\% 成功率、6\% 碰撞率），单点评测 95.2\% 验证了单段避障的可用性，为整链失败归因提供了可靠参照。联合评测则显示，RL-Greedy 整链成功率（82\%）虽高于几何最优（67\%），但二者均明显低于单点 95.2\%；连续逐点任务显著拉低避障成功率，成功组航程相近也表明上下层规划与执行相互割裂。鉴于无人机碰撞存在炸机风险且任务成本较高，整链成功率较路径几何最优更具优先级。中期之后的工作重心应转向 TSP 训练引入障碍物惩罚，将目标规模从 TSP20 扩展至 50 点及以上，并扩展至 500 组联合评测，在路径长度较优的基础上提升连续任务整链成功率，从而形成从问题定位到约束建模再到整链验证的闭环。
+
+\section{目前存在的或预期可能出现的问题}
+
+当前主要问题集中在上下层目标不一致。上层优化无障碍欧氏距离，下层受障碍约束；单点导航成功率 95.2\%，而联合评测中 Optimal 仅 67\%、RL-Greedy 82\%，连续任务显著拉低避障成功率，路径质量指标与任务成功率尚未对齐，因而难以仅凭 ratio 判断整链任务是否可完成；即便上层 ratio 接近 1，整链仍可能因段间通道不可飞而频繁中断，这说明几何最优与可执行最优在当前设定下并不等价，二者之间的偏差需要通过障碍物惩罚或类似机制在上层目标中显式建模。
+
+障碍物惩罚 TSP 尚未开展。上层仍假设无障碍度量空间，尚未在 TSP 训练/解码中引入障碍代价；后续拟将含障序列规划建模为约束马尔可夫决策过程（CMDP）~\cite{altman2021cmdp}，在优化回路长度的同时显式控制与障碍相关的序列风险，这是中期之后论文主体的核心工作，亦是对联合评测所揭示目标错位问题的直接回应，并有望使上层 ratio 与下层整链成功率重新建立可解释的相关关系。
+
+当前上层 TSP 训练与评测均固定为 $n=20$ 个目标点（TSP20）。该规模便于 Held-Karp~\cite{lin1973karp}求精确最优，但对农业巡检、工业运维等实际多目标作业的代表性仍不足；目标点数增至 50 乃至更多时，序列搜索空间与整链执行难度将显著上升，现有结论的外推性有待验证。后续计划在指针网络框架下开展 TSP50 及更大规模的训练与批量评测，并评估 ratio、训练收敛与联合评测可行性，以检验两层架构在更大规模下的可扩展边界，并判断障碍物惩罚机制是否随规模放大仍保持有效。
+
+联合评测样本量仍有限，当前仅 100 组，需扩展至 500 组并量化 ratio 与联合成功率的协同或冲突规律，从而获得更稳健的统计结论，并检验 100 组初步趋势是否在大样本下保持一致。
+
+算法对比实验中 PPO 成功率 0\%，尚未收敛；后续可针对 PPO 调整专用超参数后重训，作为补充实验，但不纳入主线路，以免分散对上下层协同问题的研究重心，同时保留其作为 on-policy 对照的参考价值。
+
+\section{后期学术研究或者实践工作的进度安排}
+
+\begin{table}[htbp]
+  \centering
+  \caption{后期进度安排}
+  \label{tab:schedule}
+  \begin{tabular}{clp{5.2cm}}
+    \toprule
+    时间 & 工作内容 & 预期成果 \\
+    \midrule
+    2026.06--07 & 联合评测扩展至 500 组 & 路径质量与成功率协同数据 \\
+    2026.07--08 & TSP 规模扩展至 50 点及以上 & 大规模训练收敛与 ratio 评测 \\
+    2026.07--08 & TSP 训练引入障碍物惩罚 & 含障代价模型与 ratio 对比 \\
+    2026.08--09 & 障碍物惩罚 TSP 与联合评测闭环 & 整链成功率提升验证 \\
+    2026.10--2027.01 & 论文撰写、补充实验 & 协同关系分析与讨论 \\
+    2027.02--03 & 全文修改、预答辩 & 定稿 \\
+    \bottomrule
+  \end{tabular}
+\end{table}
+
+近期优先扩展联合评测至 500 组，将上层 TSP 从 20 点扩展至 50 点及以上并开展训练与评测，设计并实现 TSP 的障碍物惩罚机制，完成路径质量与任务成功率的协同分析，并推进论文撰写与答辩准备；上述安排按``先夯实评测与规模、再闭环优化、最后成稿''的顺序推进，确保障碍物惩罚与规模扩展的结论建立在更充分的实验数据之上。
+
+\bibliographystyle{hithesis}
+\bibliography{reference}

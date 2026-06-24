@@ -1,0 +1,56 @@
+This is BibTeX, Version 0.99d (TeX Live 2025)
+Capacity: max_strings=200000, hash_size=200000, hash_prime=170003
+The top-level auxiliary file: report.aux
+The style file: hithesis.bst
+Reallocated singl_function (elt_size=4) to 100 items from 50.
+Reallocated singl_function (elt_size=4) to 100 items from 50.
+Reallocated wiz_functions (elt_size=4) to 6000 items from 3000.
+Database file #1: reference.bib
+Warning--Require address: sariff2006overview
+Warning--Require address: lin1973karp
+Warning--Require citedate: he2021explainable
+Warning--Require address: haarnoja2018sac
+Warning--Require address: fedus2020replay
+Warning--Require address: altman2021cmdp
+You've used 17 entries,
+            3100 wiz_defined-function locations,
+            806 strings with 8700 characters,
+and the built_in function-call counts, 45508 in all, are:
+= -- 5505
+> -- 66
+< -- 66
++ -- 4837
+- -- 220
+* -- 957
+:= -- 5626
+add.period$ -- 0
+call.type$ -- 17
+change.case$ -- 0
+chr.to.int$ -- 0
+cite$ -- 23
+duplicate$ -- 6411
+empty$ -- 1187
+format.name$ -- 196
+if$ -- 12453
+int.to.chr$ -- 0
+int.to.str$ -- 17
+missing$ -- 0
+newline$ -- 78
+num.names$ -- 17
+pop$ -- 391
+preamble$ -- 1
+purify$ -- 0
+quote$ -- 0
+skip$ -- 243
+stack$ -- 0
+substring$ -- 5741
+swap$ -- 776
+text.length$ -- 0
+text.prefix$ -- 0
+top$ -- 0
+type$ -- 0
+warning$ -- 6
+while$ -- 402
+width$ -- 19
+write$ -- 253
+(There were 6 warnings)

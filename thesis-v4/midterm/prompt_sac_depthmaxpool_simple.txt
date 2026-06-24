@@ -1,0 +1,99 @@
+You are an expert Scientific Illustrator for top-tier AI conferences (NeurIPS/CVPR/ICML).
+Generate a CLEAN, MINIMAL SAC-DepthMaxPool architecture diagram. Prioritize clarity over detail — this is a midterm thesis overview figure; full specs are in a separate table.
+
+**Design goal:** One glance shows Perception → DepthMaxPool → SAC. No nested boxes, no neuron graphs, no footer legend.
+
+---
+
+**Layout (left → right, 3 panels only):**
+
+```
+[ PERCEPTION ]  →  [ DEPTHMAXPOOL ]  →  [ SAC ]
+     blue              green              purple
+```
+
+Single horizontal arrow between panels. White background, flat vector, academic pastel. Total width ~16:9 or slide-friendly.
+
+---
+
+**Panel 1 — PERCEPTION (blue, narrow)**
+- One small grayscale depth thumbnail (optional, simplified)
+- Labels (max 2 lines):
+  - **Depth 60×90**
+  - **obs (60, 90, 2)** — Ch0 depth, Ch1 state row
+- NO "stacked frames", NO long paragraphs
+
+---
+
+**Panel 2 — DEPTHMAXPOOL (green, medium)**
+Simple vertical flow inside ONE box (no dashed sub-boxes):
+
+```
+Depth Ch0 (60×90)
+       ↓
+MaxPool (16×20)
+       ↓
+Grid 3×4 = 12D  ──+
+                   ├──→ 14D features
+State 2D ─────────+     (d_norm, ψ_norm)
+```
+
+Visual rules:
+- Show **one** small **3×4 grid** (12 cells) — NOT 3×3
+- State label: **2D state (d_norm, ψ_norm)** — NOT (x,y), NOT velocity
+- One output arrow labeled **14D**
+- Optional tiny tag: **CNN-free**
+- NO duplicate "60×90" text, NO bracket captions, NO kernel/stride parameter box (omit or one line "MaxPool 16×20" only)
+
+---
+
+**Panel 3 — SAC (purple, medium)**
+Simple block diagram — NO layer-by-layer MLP node graphs:
+
+```
+        14D features
+             ↓
+    ┌────────┴────────┐
+    ↓                 ↓
+  Actor            Twin Q
+  MLP              Q1, Q2
+    ↓                 ↑
+ [v_xy, yaw_rate] ────┘
+   (2D action)
+```
+
+Labels (short only):
+- **Actor** — MLP [64,32,16] → **a = (v_xy, yaw_rate)**
+- **Twin Critic** — **Q(s,a)**, shared 14D + action
+- Draw **one arrow** from action into Twin Q to show Q(s,a)
+
+**OMIT entirely:**
+- Experience Replay Buffer
+- Individual MLP hidden-layer node diagrams
+- Squashed Gaussian / entropy / target network
+- Scalar Q₁ Q₂ output boxes with extra decoration
+
+---
+
+**Global simplification rules (CRITICAL):**
+1. **Max 8–10 text labels** in the entire figure
+2. **NO bottom footer / icon legend row**
+3. **NO dashed nested boxes** inside panels
+4. **NO 3D shading**, photos, or hand-drawn sketches
+5. Use **icons/blocks**, not detailed neural-network graphs
+6. Font: clean sans-serif, readable at slide scale
+7. Action is **2D only**: **[v_xy, yaw_rate]** — never v_x, v_y, yaw_rate as 3D
+
+---
+
+**Negative constraints:**
+- NO Experience Replay cylinder
+- NO 5-item footer (CNN-FREE / 94% success / etc.) — those belong in paper text
+- NO repeating "3×4=12" in multiple places (say once at the grid)
+- NO Twin Critic without action input arrow
+- NO Perception "current/previous" frame stacking
+
+---
+
+**Generation Instruction:**
+Draw a minimal 3-panel pipeline: depth obs → MaxPool 12D + 2D state → 14D → SAC Actor (2D action) + Twin Q(s,a). Clean, sparse, thesis-friendly. Less is more.

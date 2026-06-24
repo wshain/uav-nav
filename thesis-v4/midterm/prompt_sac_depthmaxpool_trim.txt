@@ -1,0 +1,7 @@
+Edit SAC-DepthMaxPool reference. Keep layout/colors; change nothing except DELETE:
+(1) Bottom 5-item legend row (all icons+text); crop cleanly.
+(2) Green bracket caption "Coarse Obstacle Map + 2D Position (CNN-FREE representation)".
+(3) Right-side v_xy/yaw_rate definition text; keep Action [v_xy, yaw_rate].
+(4) Middle "(MaxPool on Ch0 only; Ch1 bypasses MaxPool...)" note. Perception: one line—obs(60,90,2): Ch0 depth · Ch1 state row.
+(5) Text under Q1/Q2 in Twin Critic (concat→MLP→scalar); keep Q boxes/arrows/MLP graphics.
+No new labels. Flat pastel vector. Subtraction only.

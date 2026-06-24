@@ -1,0 +1,38 @@
+You are an expert Scientific Illustrator. Edit the attached SAC-DepthMaxPool diagram.
+Keep the 3-panel layout (blue Perception | green DepthMaxPool | purple SAC) and all CORRECT labels.
+Remove visual clutter only — make the figure sparse enough to read in 5 seconds.
+
+**KEEP (do not change semantics):**
+- obs (60,90,2): Ch0 depth, Ch1 row0 = 2D state
+- MaxPool on depth → 3×4 grid = 12D
+- 2D state should read **(d_norm, ψ_norm)** NOT (v_xy, yaw_rate) — fix if wrong
+- 14D output → Actor + Twin Q
+- Action: **2D [v_xy, yaw_rate]**
+- Twin Q takes **concat(14D, action)**
+
+**DELETE entirely (remove these elements):**
+1. Bottom footer legend row (all 5 icons: CNN-FREE, Coarse Grid, Add 2D State, Shared 14D, 94% success)
+2. Experience Replay Buffer cylinder and all dashed lines to it
+3. Actor MLP node-layer diagram (circles/layers) — replace with one text line: **Actor · MLP**
+4. Twin Critic duplicate MLP node diagrams — replace with one box: **Twin Q(s,a)**
+5. Right-side action definition text block ("v_xy = horizontal speed...", "yaw_rate = yaw angular...")
+6. Bottom bracket caption: "Coarse Obstacle Map + 2D Position (CNN-FREE representation)"
+7. MaxPool parameter sub-box if it lists kernel_size AND stride separately — keep at most **MaxPool 16×20** as one short line OR remove
+8. Long parenthetical: "(MaxPool on Ch0 only; Ch1 bypasses MaxPool; state read from Ch1 row 0)" — delete; Ch0/Ch1 one-liner in Perception is enough
+9. 14 individual small squares for 14D — replace with single bar or box labeled **14D**
+10. Redundant "Input Depth (60×90)" if Perception already shows 60×90
+
+**Target: max 8 labels in the whole figure**
+1. Depth 60×90 (or depth thumbnail only)
+2. obs (60,90,2) — optional sub: Ch0 depth · Ch1 state
+3. MaxPool → 3×4 (12D) — grid visual, one label
+4. 2D state (d_norm, ψ_norm)
+5. 14D
+6. Actor → a=(v_xy, yaw_rate)
+7. Twin Q(s,a)
+
+**Style:** flat vector, same pastel colors, more whitespace, larger font, fewer boxes.
+**Negative:** NO new text beyond the 8 labels above. NO footer. NO replay buffer. NO neuron graphs.
+
+**Generation Instruction:**
+Declutter the reference image: same correct pipeline, half the text, no bottom legend, no MLP node art, no side annotations.

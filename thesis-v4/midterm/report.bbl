@@ -1,0 +1,146 @@
+\begin{thebibliography}{10}
+\providecommand{\bibauthor}[1]{#1}
+\providecommand{\bibeditor}[1]{\bibauthor{#1}}
+\providecommand{\bibtranslator}[1]{#1}
+\providecommand{\bibtitle}[1]{#1}
+\providecommand{\bibbooktitle}[1]{#1}
+\providecommand{\bibjournal}[1]{#1}
+\providecommand{\bibmark}[1]{\mbox{#1}}
+\providecommand{\bibcountry}[1]{#1}
+\providecommand{\bibpatentid}[1]{#1}
+\providecommand{\bibedition}[1]{#1}
+\providecommand{\biborganization}[1]{#1}
+\providecommand{\bibaddress}[1]{#1}
+\providecommand{\bibpublisher}[1]{#1}
+\providecommand{\bibinstitution}[1]{#1}
+\providecommand{\bibschool}[1]{#1}
+\providecommand{\bibvolume}[1]{#1}
+\providecommand{\bibnumber}[1]{#1}
+\providecommand{\bibversion}[1]{#1}
+\providecommand{\bibpages}[1]{#1}
+\providecommand{\bibmodifydate}[1]{#1}
+\providecommand{\bibcitedate}[1]{#1}
+\providecommand{\bibyear}[1]{#1}
+\providecommand{\bibdate}[1]{#1}
+\providecommand{\biburl}[1]{\newline\url{#1}}
+
+\bibitem{huang2022ufpmp}
+\bibauthor{{, et~al}{Huang Y}{, Chen J}{, Huang D}}\nolinebreak\@.
+  \bibtitle{{UFPMP-Det}: Toward accurate and efficient object detection on
+  drone imagery}\bibmark{[C]} //\thinspace{}\bibbooktitle{Proceedings of the
+  AAAI Conference on Artificial Intelligence\textnormal{:
+  }Vol~36}\nolinebreak\@. \bibyear{2022}\textnormal{:
+  }\bibpages{1026\textnormal{-}1033}\nolinebreak\@.
+
+\bibitem{zhu2021tph}
+\bibauthor{{, et~al}{Zhu X}{, Lyu S}{, Wang X}{, others}}\nolinebreak\@.
+  \bibtitle{{TPH-YOLOv5}: Improved {YOLOv5} based on transformer prediction
+  head for object detection on drone-captured scenarios}\bibmark{[C]}
+  //\thinspace{}\bibbooktitle{Proceedings of the IEEE/CVF International
+  Conference on Computer Vision}\nolinebreak\@. \bibyear{2021}\textnormal{:
+  }\bibpages{2778\textnormal{-}2788}\nolinebreak\@.
+
+\bibitem{sariff2006overview}
+\bibauthor{{, et~al}{Sariff N}{, Buniyamin N}}\nolinebreak\@. \bibtitle{An
+  overview of autonomous mobile robot path planning algorithms}\bibmark{[C]}
+  //\thinspace{}\bibbooktitle{2006 4th Student Conference on Research and
+  Development}\nolinebreak\@. \bibaddress{[S.l.]}\textnormal{:
+  }\bibpublisher{IEEE}, \bibyear{2006}\textnormal{:
+  }\bibpages{183\textnormal{-}188}\nolinebreak\@.
+
+\bibitem{dewangan2019gwo}
+\bibauthor{{, et~al}{Dewangan R~K}{, Shukla A}{, Godfrey W~W}}\nolinebreak\@.
+  \bibtitle{Three dimensional path planning using {Grey} wolf optimizer for
+  {UAVs}}\bibmark{[J]}\nolinebreak\@. \bibjournal{Applied Intelligence},
+  \bibyear{2019}, \bibvolume{49}\bibnumber{(6)}\textnormal{:
+  }\bibpages{2201\textnormal{-}2217}\nolinebreak\@.
+
+\bibitem{bello2017nco}
+\bibauthor{{, et~al}{Bello I}{, Pham H}{, Le Q~V}{, others}}\nolinebreak\@.
+  \bibtitle{Neural combinatorial optimization with reinforcement
+  learning}\bibmark{[C]} //\thinspace{}\bibbooktitle{International Conference
+  on Learning Representations (ICLR) Workshop}\nolinebreak\@.
+  \bibyear{2017}\nolinebreak\@.
+
+\bibitem{vinyals2015pointer}
+\bibauthor{{, et~al}{Vinyals O}{, Fortunato M}{, Jaitly N}}\nolinebreak\@.
+  \bibtitle{Pointer networks}\bibmark{[C]} //\thinspace{}\bibbooktitle{Advances
+  in Neural Information Processing Systems}\nolinebreak\@.
+  \bibyear{2015}\textnormal{: }\bibpages{2692\textnormal{-}2700}\nolinebreak\@.
+
+\bibitem{sutton2018rl}
+\bibauthor{{, et~al}{Barto A~G}}\nolinebreak\@. \bibtitle{Reinforcement
+  learning: An introduction. by Richard S. Sutton}\bibmark{[J]}\nolinebreak\@.
+  \bibjournal{SIAM Review}, \bibyear{2021},
+  \bibvolume{6}\bibnumber{(2)}\textnormal{: }\bibpages{423}\nolinebreak\@.
+
+\bibitem{lin1973karp}
+\bibauthor{{, et~al}{Lin S}{, Kernighan B~W}}\nolinebreak\@. \bibtitle{An
+  effective heuristic algorithm for the traveling-salesman
+  problem}\bibmark{[R]}\nolinebreak\@. \bibaddress{[S.l.]}\textnormal{:
+  }\bibinstitution{Bell System Technical Journal},
+  \bibyear{1973}\nolinebreak\@.
+
+\bibitem{christofides1976}
+\bibauthor{{, et~al}{Christofides N}}\nolinebreak\@. \bibtitle{Worst-case
+  analysis of a new heuristic for the travelling salesman
+  problem}\bibmark{[J]}\nolinebreak\@. \bibjournal{Management Sciences Research
+  Report}, \bibyear{1976}, \bibvolume{388}\nolinebreak\@.
+
+\bibitem{he2021explainable}
+\bibauthor{{, et~al}{He L}{, Aouf N}{, Song B}}\nolinebreak\@.
+  \bibtitle{Explainable deep reinforcement learning for {UAV} autonomous path
+  planning}\bibmark{[J/OL]}\nolinebreak\@. \bibjournal{Aerospace Science and
+  Technology}, \bibyear{2021}, \bibvolume{118}\textnormal{:
+  }\bibpages{107052}\nolinebreak\@.
+  \url{http://dx.doi.org/10.1016/j.ast.2021.107052}\nolinebreak\@.
+
+\bibitem{liu2022hrl}
+\bibauthor{{, et~al}{Liu Z}{, Cao Y}{, Chen J}{, others}}\nolinebreak\@.
+  \bibtitle{A hierarchical reinforcement learning algorithm based on attention
+  mechanism for {UAV} autonomous navigation}\bibmark{[J]}\nolinebreak\@.
+  \bibjournal{IEEE Transactions on Intelligent Transportation Systems},
+  \bibyear{2022}, \bibvolume{24}\bibnumber{(11)}\textnormal{:
+  }\bibpages{13309\textnormal{-}13320}\nolinebreak\@.
+
+\bibitem{brockman2016gym}
+\bibauthor{{, et~al}{Brockman G}{, Cheung V}{, Pettersson L}{,
+  others}}\nolinebreak\@. \bibtitle{Openai gym}\bibmark{[J]}\nolinebreak\@.
+  \bibjournal{arXiv preprint arXiv:1606.01540}, \bibyear{2016}\nolinebreak\@.
+
+\bibitem{chen2022uavsim}
+\bibauthor{{, et~al}{Chen S}{, Zhou W}{, Yang A~S}{, others}}\nolinebreak\@.
+  \bibtitle{An end-to-end {UAV} simulation platform for visual {SLAM} and
+  navigation}\bibmark{[J]}\nolinebreak\@. \bibjournal{Aerospace},
+  \bibyear{2022}, \bibvolume{9}\bibnumber{(2)}\textnormal{:
+  }\bibpages{48}\nolinebreak\@.
+
+\bibitem{haarnoja2018sac}
+\bibauthor{{, et~al}{Haarnoja T}{, Zhou A}{, Abbeel P}{,
+  others}}\nolinebreak\@. \bibtitle{Soft actor-critic: Off-policy maximum
+  entropy deep reinforcement learning with a stochastic actor}\bibmark{[C]}
+  //\thinspace{}\bibbooktitle{International Conference on Machine
+  Learning}\nolinebreak\@. \bibaddress{[S.l.]}\textnormal{:
+  }\bibpublisher{PMLR}, \bibyear{2018}\textnormal{:
+  }\bibpages{1861\textnormal{-}1870}\nolinebreak\@.
+
+\bibitem{fang2024sac}
+\bibauthor{{, et~al}{方城亮}{, others}}\nolinebreak\@.
+  \bibtitle{基于最大熵安全强化学习的无人机路径规划}\bibmark{[J]}\nolinebreak\@.
+  \bibjournal{中国科学: 信息科学}, \bibyear{2024}\nolinebreak\@.
+
+\bibitem{fedus2020replay}
+\bibauthor{{, et~al}{Fedus W}{, Ramachandran P}{, Agarwal R}{,
+  others}}\nolinebreak\@. \bibtitle{Revisiting fundamentals of experience
+  replay}\bibmark{[C]} //\thinspace{}\bibbooktitle{International Conference on
+  Machine Learning}\nolinebreak\@. \bibaddress{[S.l.]}\textnormal{:
+  }\bibpublisher{PMLR}, \bibyear{2020}\textnormal{:
+  }\bibpages{3061\textnormal{-}3071}\nolinebreak\@.
+
+\bibitem{altman2021cmdp}
+\bibauthor{{, et~al}{Altman E}}\nolinebreak\@. \bibbooktitle{Constrained Markov
+  Decision Processes}\bibmark{[M]}\nolinebreak\@.
+  \bibaddress{[S.l.]}\textnormal{: }\bibpublisher{Routledge},
+  \bibyear{2021}\nolinebreak\@.
+
+\end{thebibliography}
