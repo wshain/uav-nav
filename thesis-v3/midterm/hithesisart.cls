@@ -672,11 +672,10 @@
 \let\onlinecite\inlinecite
 \ExplSyntaxOn
 \renewenvironment{thebibliography}[1]{%
-  \ifboolexpr{ bool {hit@shenzhen} and bool {hit@master} and bool {hit@opening} }%
-  {%
+  \ifhit@toc
     \section*{参考文献}
     \addcontentsline{toc}{section}{参考文献}
-  }{}
+  \fi
   \list{\@biblabel{\@arabic\c@enumiv}}{%
     \str_if_eq:VnT \g_bib_labelalign_str {left} {
       \RenewDocumentCommand\makelabel{m}{##1\hfill}
